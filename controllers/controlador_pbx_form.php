@@ -19,7 +19,7 @@ use html\pbx_form_html;
 use PDO;
 use stdClass;
 
-class controlador_pbx_form extends _ctl_base {
+class controlador_pbx_form extends _pbx_base {
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
@@ -43,12 +43,13 @@ class controlador_pbx_form extends _ctl_base {
             print_r($error);
             die('Error');
         }
+        $this->lista_get_data = true;
     }
 
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo', 'descripcion');
+        $keys->inputs = array('codigo', 'descripcion', 'nombre', 'estatus');
         $keys->selects = array();
 
         $init_data = array();
@@ -63,9 +64,7 @@ class controlador_pbx_form extends _ctl_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Registro de Formulario';
-
-        $this->lista_get_data = true;
+        $this->titulo_lista = 'Formulario de agente';
 
         return $this;
     }
@@ -74,9 +73,13 @@ class controlador_pbx_form extends _ctl_base {
     {
         $columns["pbx_form_id"]["titulo"] = "Id";
         $columns["pbx_form_codigo"]["titulo"] = "Código";
+        $columns["pbx_form_descripcion"]["titulo"] = "Descripción";
         $columns["pbx_form_nombre"]["titulo"] = "Nombre";
+        $columns["pbx_form_estatus"]["titulo"] = "Estatus";
 
-        $filtro = array("pbx_form.id","pbx_form.codigo","pbx_form.descripcion");
+
+        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.descripcion", "pbx_form.nombre",
+            "pbx_form.estatus");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -85,16 +88,40 @@ class controlador_pbx_form extends _ctl_base {
         return $datatables;
     }
 
+    private function init_selects(array $keys_selects, string $key, string $label, int $id_selected = -1, int $cols = 6,
+                                  bool  $con_registros = true, array $filtro = array()): array
+    {
+        $keys_selects = $this->key_select(cols: $cols, con_registros: $con_registros, filtro: $filtro, key: $key,
+            keys_selects: $keys_selects, id_selected: $id_selected, label: $label);
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+
+        return $keys_selects;
+    }
+
     protected function key_selects_txt(array $keys_selects): array
     {
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 4, key: 'codigo',
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'codigo',
             keys_selects: $keys_selects, place_holder: 'Código');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
 
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 8, key: 'descripcion',
-            keys_selects: $keys_selects, place_holder: 'Tipo Factor');
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'descripcion',
+            keys_selects: $keys_selects, place_holder: 'Descripción');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'nombre',
+            keys_selects: $keys_selects, place_holder: 'Nombre');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 4, key: 'estatus',
+            keys_selects: $keys_selects, place_holder: 'Estatus');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
