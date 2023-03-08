@@ -1,4 +1,4 @@
-<?php /** @var gamboamartin\cat_sat\controllers\controlador_cat_sat_producto $controlador  controlador en ejecucion */ ?>
+<?php /** @var gamboamartin\pbx\controllers\controlador_pbx_agent $controlador  controlador en ejecucion */ ?>
 <?php use config\views; ?>
 <?php echo $controlador->inputs->cat_sat_tipo_producto_id; ?>
 <?php echo $controlador->inputs->cat_sat_division_producto_id; ?>
