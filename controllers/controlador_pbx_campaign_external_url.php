@@ -11,23 +11,19 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
-use gamboamartin\pbx\models\pbx_agent;
-use gamboamartin\pbx\models\pbx_break;
-use gamboamartin\pbx\models\pbx_call_attribute;
+use gamboamartin\pbx\models\pbx_campaign_external_url;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
-use html\pbx_agent_html;
-use html\pbx_break_html;
-use html\pbx_call_attribute_html;
+use html\pbx_campaign_external_url_html;
 use PDO;
 use stdClass;
 
-class controlador_pbx_call_attribute extends _pbx_base {
+class controlador_pbx_campaign_external_url extends _pbx_base {
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
-        $modelo = new pbx_call_attribute(link: $link);
-        $html_ = new pbx_call_attribute_html(html: $html);
+        $modelo = new pbx_campaign_external_url(link: $link);
+        $html_ = new pbx_campaign_external_url_html(html: $html);
         $obj_link = new links_menu(link: $link, registro_id: $this->registro_id);
 
         $datatables = $this->init_datatable();
@@ -52,7 +48,7 @@ class controlador_pbx_call_attribute extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo', 'descripcion', 'columna', 'value', 'column_number');
+        $keys->inputs = array('codigo', 'descripcion', 'urltemplate', 'description', 'active', 'opentype');
         $keys->selects = array();
 
         $init_data = array();
@@ -67,7 +63,7 @@ class controlador_pbx_call_attribute extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de call attribute';
+        $this->titulo_lista = 'Formulario de external url';
 
         return $this;
     }
@@ -76,12 +72,13 @@ class controlador_pbx_call_attribute extends _pbx_base {
     {
         $columns["pbx_form_id"]["titulo"] = "Id";
         $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_columna"]["titulo"] = "Columna";
-        $columns["pbx_form_value"]["titulo"] = "Value";
-        $columns["pbx_form_column_number"]["titulo"] = "Column Number";
+        $columns["pbx_form_urltemplate"]["titulo"] = "Urltemplate";
+        $columns["pbx_form_description"]["titulo"] = "Description";
+        $columns["pbx_form_active"]["titulo"] = "Active";
+        $columns["pbx_form_opentype"]["titulo"] = "Opentype";
 
 
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.columna", "pbx_form.value", "pbx_form.column_number");
+        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.urltemplate", "pbx_form.description", "pbx_form.active", "pbx_form.opentype");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -116,19 +113,24 @@ class controlador_pbx_call_attribute extends _pbx_base {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
 
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'columna',
-            keys_selects: $keys_selects, place_holder: 'Columna');
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'urltemplate',
+            keys_selects: $keys_selects, place_holder: 'Url Template');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
 
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'value',
-            keys_selects: $keys_selects, place_holder: 'Value');
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'description',
+            keys_selects: $keys_selects, place_holder: 'Description');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'column_number',
-            keys_selects: $keys_selects, place_holder: 'Column Number');
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'active',
+            keys_selects: $keys_selects, place_holder: 'Active');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'opentype',
+            keys_selects: $keys_selects, place_holder: 'Open Type');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }

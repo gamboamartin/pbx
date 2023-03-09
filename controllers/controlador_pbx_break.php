@@ -65,7 +65,7 @@ class controlador_pbx_break extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de agente';
+        $this->titulo_lista = 'Formulario de break';
 
         return $this;
     }

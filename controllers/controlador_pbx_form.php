@@ -64,7 +64,7 @@ class controlador_pbx_form extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de agente';
+        $this->titulo_lista = 'Formulario de form';
 
         return $this;
     }
