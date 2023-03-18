@@ -32,8 +32,25 @@ class _pbx_base extends _ctl_base {
      * Funcion declarado y sobreescrita en cada controlador en uso
      * @return array
      */
-    public function init_selects_inputs(): array
+    protected function key_selects_txt(array $keys_selects): array
     {
-        return array();
+
+        $place_holder_desc = $this->tabla;
+        $place_holder_desc = str_replace('pbx_', '',  $place_holder_desc );
+        $place_holder_desc = str_replace('_', ' ', $place_holder_desc);
+        $place_holder_desc = ucwords($place_holder_desc);
+
+        $keys_selects = (new \base\controller\init())->key_select_txt(
+            cols: 6,key: 'codigo', keys_selects:$keys_selects, place_holder: 'Cod');
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects',data:  $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6,key: 'descripcion',
+            keys_selects:$keys_selects, place_holder: $place_holder_desc);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects',data:  $keys_selects);
+        }
+
+        return $keys_selects;
     }
 }
