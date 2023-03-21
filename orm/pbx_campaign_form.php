@@ -7,7 +7,7 @@ use PDO;
 class pbx_campaign_form extends _modelo_parent {
     public function __construct(PDO $link){
         $tabla = 'pbx_campaign_form';
-        $columnas = array($tabla => false, "pbx_form" => $tabla);
+        $columnas = array($tabla => false, "pbx_form" => $tabla, "pbx_campaign" => $tabla);
         $campos_obligatorios[] = 'codigo';
         $campos_obligatorios[] = 'descripcion';
 

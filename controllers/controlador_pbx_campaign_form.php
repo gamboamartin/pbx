@@ -53,6 +53,7 @@ class controlador_pbx_campaign_form extends _pbx_base {
 
         $init_data = array();
         $init_data['pbx_form'] = "gamboamartin\\pbx";
+        $init_data['pbx_campaign'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
@@ -75,10 +76,11 @@ class controlador_pbx_campaign_form extends _pbx_base {
         $columns["pbx_campaign_form_codigo"]["titulo"] = "Código";
         $columns["pbx_campaign_form_descripcion"]["titulo"] = "Descripcion";
         $columns["pbx_form_descripcion"]["titulo"] = "Formulario";
+        $columns["pbx_campaign_descripcion"]["titulo"] = "Formulario";
 
 
 
-        $filtro = array("pbx_campaign_form.id", "pbx_campaign_form.codigo", "pbx_campaign_form.descripcion", "pbx_form.descripcion");
+        $filtro = array("pbx_campaign_form.id", "pbx_campaign_form.codigo", "pbx_campaign_form.descripcion", "pbx_form.descripcion","pbx_campaign_descripcion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -101,7 +103,9 @@ class controlador_pbx_campaign_form extends _pbx_base {
 
     public function init_selects_inputs(): array
     {
-        return $this->init_selects(keys_selects: array(), key: "pbx_form_id", label: "Formulario",
+        $keys_selects = $this->init_selects(keys_selects: array(), key: "pbx_campaign_id", label: "Campaña",
+            cols: 12);
+        return $this->init_selects(keys_selects: $keys_selects, key: "pbx_form_id", label: "Formulario",
             cols: 12);
     }
 
@@ -136,6 +140,7 @@ class controlador_pbx_campaign_form extends _pbx_base {
         }
 
         $keys_selects['pbx_form_id']->id_selected = $this->registro['pbx_form_id'];
+        $keys_selects['pbx_campaign_id']->id_selected = $this->registro['pbx_campaign_id'];
 
         $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
         if (errores::$error) {
