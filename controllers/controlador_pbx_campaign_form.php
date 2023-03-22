@@ -52,7 +52,7 @@ class controlador_pbx_campaign_form extends _pbx_base {
         $keys->selects = array();
 
         $init_data = array();
-        $init_data['pbx_form'] = "gamboamartin\\pbx";
+        $init_data['pbx_agent_id'] = "gamboamartin\\pbx";
         $init_data['pbx_campaign'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);

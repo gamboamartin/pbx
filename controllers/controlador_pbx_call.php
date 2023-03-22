@@ -53,6 +53,8 @@ class controlador_pbx_call extends _pbx_base {
         $keys->selects = array();
 
         $init_data = array();
+        $init_data['pbx_agent'] = "gamboamartin\\pbx";
+        $init_data['pbx_campaign'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
@@ -78,10 +80,12 @@ class controlador_pbx_call extends _pbx_base {
         $columns["pbx_call_retries"]["titulo"] = "Reintentos";
         $columns["pbx_call_dnc"]["titulo"] = "DNC";
         $columns["pbx_call_scheduled"]["titulo"] = "Programada";
+        $columns["pbx_agent_descripcion"]["titulo"] = "Formulario";
+        $columns["pbx_campaign_descripcion"]["titulo"] = "Formulario";
 
 
         $filtro = array("pbx_call.id", "pbx_call.codigo", "pbx_call.descripcion", "pbx_call.phone", "pbx_call.retries",
-            "pbx_call.dnc","pbx_call.scheduled");
+            "pbx_call.dnc","pbx_call.scheduled", "pbx_agent_descripcion", "pbx_campaign_descripcion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -101,7 +105,13 @@ class controlador_pbx_call extends _pbx_base {
 
         return $keys_selects;
     }
-
+    public function init_selects_inputs(): array
+    {
+        $keys_selects = $this->init_selects(keys_selects: array(), key: "pbx_campaign_id", label: "Campaña",
+            cols: 12);
+        return $this->init_selects(keys_selects: $keys_selects, key: "pbx_agent_id", label: "Agente",
+            cols: 12);
+    }
     protected function key_selects_txt(array $keys_selects): array
     {
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'codigo',
@@ -149,6 +159,14 @@ class controlador_pbx_call extends _pbx_base {
             return $this->retorno_error(
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
+        $keys_selects = $this->init_selects_inputs();
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
+                ws: $ws);
+        }
+
+        $keys_selects['pbx_agent_id']->id_selected = $this->registro['pbx_agent_id'];
+        $keys_selects['pbx_campaign_id']->id_selected = $this->registro['pbx_campaign_id'];
 
         $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
         if (errores::$error) {

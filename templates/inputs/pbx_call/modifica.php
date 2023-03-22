@@ -6,6 +6,8 @@
 <?php echo $controlador->inputs->retries; ?>
 <?php echo $controlador->inputs->dnc; ?>
 <?php echo $controlador->inputs->scheduled; ?>
+<?php echo $controlador->inputs->pbx_agent_id; ?>
+<?php echo $controlador->inputs->pbx_campaign_id; ?>
 <?php include (new views())->ruta_templates.'botons/submit/modifica_bd.php';?>
 <div class="error" style="margin-bottom: 20px"></div>
 
