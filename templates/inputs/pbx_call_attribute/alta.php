@@ -6,6 +6,7 @@
 <?php echo $controlador->inputs->columna; ?>
 <?php echo $controlador->inputs->value; ?>
 <?php echo $controlador->inputs->column_number; ?>
+<?php echo $controlador->inputs->pbx_call_id; ?>
 <?php include (new views())->ruta_templates.'botons/submit/alta_bd.php';?>
 <div class="error"></div>
 

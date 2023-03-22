@@ -56,7 +56,7 @@ class controlador_pbx_call_attribute extends _pbx_base {
         $keys->selects = array();
 
         $init_data = array();
-
+        $init_data['pbx_call'] = "gamboamartin\\pbx";
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al inicializar campo view', data: $campos_view);
@@ -74,14 +74,16 @@ class controlador_pbx_call_attribute extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_form_id"]["titulo"] = "Id";
-        $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_columna"]["titulo"] = "Columna";
-        $columns["pbx_form_value"]["titulo"] = "Value";
-        $columns["pbx_form_column_number"]["titulo"] = "Column Number";
+        $columns["pbx_call_attribute_id"]["titulo"] = "Id";
+        $columns["pbx_call_attribute_codigo"]["titulo"] = "Código";
+        $columns["pbx_call_attribute_columna"]["titulo"] = "Columna";
+        $columns["pbx_call_attribute_value"]["titulo"] = "Value";
+        $columns["pbx_call_attribute_column_number"]["titulo"] = "Column Number";
+        $columns["pbx_call_descripcion"]["titulo"] = "Llamada";
 
 
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.columna", "pbx_form.value", "pbx_form.column_number");
+        $filtro = array("pbx_call_attributeid", "pbx_call_attributecodigo", "pbx_call_attributecolumna", "pbx_call_attributevalue", "pbx_call_attributecolumn_number",
+            "pbx_call_descripcion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -101,7 +103,12 @@ class controlador_pbx_call_attribute extends _pbx_base {
 
         return $keys_selects;
     }
+    public function init_selects_inputs(): array
+    {
 
+        return $this->init_selects(keys_selects:  array(), key: "pbx_call_id", label: "Llamada",
+            cols: 12);
+    }
     protected function key_selects_txt(array $keys_selects): array
     {
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'codigo',
@@ -143,6 +150,13 @@ class controlador_pbx_call_attribute extends _pbx_base {
             return $this->retorno_error(
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
+        $keys_selects = $this->init_selects_inputs();
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
+                ws: $ws);
+        }
+
+        $keys_selects['pbx_call_id']->id_selected = $this->registro['pbx_call_id'];
 
         $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
         if (errores::$error) {
