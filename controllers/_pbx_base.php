@@ -13,10 +13,9 @@ class _pbx_base extends _ctl_base {
             return $this->retorno_error(mensaje: 'Error al inicializar alta', data: $r_alta, header: $header, ws: $ws);
         }
 
-        $keys_selects = $this->init_selects_inputs();
-        if (errores::$error) {
-            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
-                ws: $ws);
+        $keys_selects = array('codigo','descripcion');
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al maquetar key_selects',data:  $keys_selects, header: $header,ws:  $ws);
         }
 
         $inputs = $this->inputs(keys_selects: $keys_selects);
