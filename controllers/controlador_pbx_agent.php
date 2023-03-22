@@ -70,19 +70,19 @@ class controlador_pbx_agent extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_form_id"]["titulo"] = "Id";
-        $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_descripcion"]["titulo"] = "Descripción";
-        $columns["pbx_form_type"]["titulo"] = "Type";
-        $columns["pbx_form_number"]["titulo"] = "Numero";
-        $columns["pbx_form_name"]["titulo"] = "Nombre";
-        $columns["pbx_form_password"]["titulo"] = "Password";
-        $columns["pbx_form_estatus"]["titulo"] = "Estatus";
-        $columns["pbx_form_eccp_password"]["titulo"] = "ECCP Password";
+        $columns["pbx_agent_id"]["titulo"] = "Id";
+        $columns["pbx_agent_codigo"]["titulo"] = "Código";
+        $columns["pbx_agent_descripcion"]["titulo"] = "Descripción";
+        $columns["pbx_agent_type"]["titulo"] = "Type";
+        $columns["pbx_agent_number"]["titulo"] = "Numero";
+        $columns["pbx_agent_name"]["titulo"] = "Nombre";
+        $columns["pbx_agent_password"]["titulo"] = "Password";
+        $columns["pbx_agent_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_agent_eccp_password"]["titulo"] = "ECCP Password";
 
 
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.descripcion", "pbx_form.type", "pbx_form.number",
-            "pbx_form.name", "pbx_form.password", "pbx_form.eccp_password", "pbx_form.estatus");
+        $filtro = array("pbx_agent.id", "pbx_agent.codigo", "pbx_agent.descripcion", "pbx_agent.type", "pbx_agent.number",
+            "pbx_agent.name", "pbx_agent.password", "pbx_agent.eccp_password", "pbx_agent.estatus");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
