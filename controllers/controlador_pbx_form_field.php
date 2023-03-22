@@ -11,11 +11,9 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
-use gamboamartin\pbx\models\pbx_campaign_external_url;
 use gamboamartin\pbx\models\pbx_form_field;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
-use html\pbx_campaign_external_url_html;
 use html\pbx_form_field_html;
 use PDO;
 use stdClass;
@@ -54,6 +52,7 @@ class controlador_pbx_form_field extends _pbx_base {
         $keys->selects = array();
 
         $init_data = array();
+        $init_data['pbx_form'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
@@ -72,15 +71,16 @@ class controlador_pbx_form_field extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_form_id"]["titulo"] = "Id";
-        $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_etiqueta"]["titulo"] = "Etiqueta";
-        $columns["pbx_form_value"]["titulo"] = "Value";
-        $columns["pbx_form_tipo"]["titulo"] = "Tipo";
-        $columns["pbx_form_orden"]["titulo"] = "Orden";
+        $columns["pbx_form_field_id"]["titulo"] = "Id";
+        $columns["pbx_form_field_codigo"]["titulo"] = "Código";
+        $columns["pbx_form_field_etiqueta"]["titulo"] = "Etiqueta";
+        $columns["pbx_form_field_value"]["titulo"] = "Value";
+        $columns["pbx_form_field_tipo"]["titulo"] = "Tipo";
+        $columns["pbx_form_field_orden"]["titulo"] = "Orden";
+        $columns["pbx_form_descripcion"]["titulo"] = "Llamada";
 
-
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.etiqueta", "pbx_form.value", "pbx_form.tipo", "pbx_form.orden");
+        $filtro = array("pbx_form_field.id", "pbx_form_field.codigo", "pbx_form_field.etiqueta", "pbx_form_field.value", "pbx_form_field.tipo", "pbx_form_field.orden",
+            "pbx_form_descripcion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -100,7 +100,12 @@ class controlador_pbx_form_field extends _pbx_base {
 
         return $keys_selects;
     }
+    public function init_selects_inputs(): array
+    {
 
+        return $this->init_selects(keys_selects:  array(), key: "pbx_form_id", label: "Formulario",
+            cols: 12);
+    }
     protected function key_selects_txt(array $keys_selects): array
     {
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'codigo',
@@ -147,6 +152,14 @@ class controlador_pbx_form_field extends _pbx_base {
             return $this->retorno_error(
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
+        $keys_selects = $this->init_selects_inputs();
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
+                ws: $ws);
+        }
+
+        $keys_selects['pbx_form_id']->id_selected = $this->registro['pbx_form_id'];
+
 
         $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
         if (errores::$error) {

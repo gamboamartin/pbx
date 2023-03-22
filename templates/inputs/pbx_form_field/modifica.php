@@ -6,6 +6,7 @@
 <?php echo $controlador->inputs->value; ?>
 <?php echo $controlador->inputs->tipo; ?>
 <?php echo $controlador->inputs->orden; ?>
+<?php echo $controlador->inputs->pbx_form_id; ?>
 <?php include (new views())->ruta_templates.'botons/submit/modifica_bd.php';?>
 <div class="error" style="margin-bottom: 20px"></div>
 

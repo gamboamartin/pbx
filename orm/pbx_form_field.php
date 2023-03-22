@@ -6,8 +6,8 @@ use PDO;
 
 class pbx_form_field extends _modelo_parent {
     public function __construct(PDO $link){
-        $tabla = 'pbx_call_attribute';
-        $columnas = array($tabla=>false);
+        $tabla = 'pbx_form_field';
+        $columnas = array($tabla=>false, "pbx_form" => $tabla );
         $campos_obligatorios[] = 'codigo';
         $campos_obligatorios[] = 'descripcion';
         $campos_obligatorios[] = 'etiqueta';
