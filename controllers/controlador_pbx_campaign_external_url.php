@@ -70,15 +70,15 @@ class controlador_pbx_campaign_external_url extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_campaign_external_url_html_id"]["titulo"] = "Id";
-        $columns["pbx_campaign_external_url_html_codigo"]["titulo"] = "Código";
-        $columns["pbx_campaign_external_url_html_urltemplate"]["titulo"] = "Urltemplate";
-        $columns["pbx_campaign_external_url_html_description"]["titulo"] = "Description";
-        $columns["pbx_campaign_external_url_html_active"]["titulo"] = "Active";
-        $columns["pbx_campaign_external_url_html_opentype"]["titulo"] = "Opentype";
+        $columns["pbx_campaign_external_url_id"]["titulo"] = "Id";
+        $columns["pbx_campaign_external_url_codigo"]["titulo"] = "Código";
+        $columns["pbx_campaign_external_url_urltemplate"]["titulo"] = "Urltemplate";
+        $columns["pbx_campaign_external_url_description"]["titulo"] = "Description";
+        $columns["pbx_campaign_external_url_active"]["titulo"] = "Active";
+        $columns["pbx_campaign_external_url_opentype"]["titulo"] = "Opentype";
 
 
-        $filtro = array("pbx_campaign_external_url_html.id", "pbx_campaign_external_url_html.codigo", "pbx_campaign_external_url_html.urltemplate", "pbx_campaign_external_url_html.description", "pbx_campaign_external_url_html.active", "pbx_campaign_external_url_html.opentype");
+        $filtro = array("pbx_campaign_external_url.id", "pbx_campaign_external_url.codigo", "pbx_campaign_external_url.urltemplate", "pbx_campaign_external_url.description", "pbx_campaign_external_url.active", "pbx_campaign_external_url.opentype");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;

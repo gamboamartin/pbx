@@ -1,4 +1,4 @@
-<?php /** @var gamboamartin\pbx\controllers\controlador_pbx_call_attribute $controlador controlador en ejecucion */ ?>
+<?php /** @var gamboamartin\pbx\controllers\controlador_pbx_form_field $controlador controlador en ejecucion */ ?>
 <?php use config\views; ?>
 <?php echo $controlador->inputs->codigo; ?>
 <?php echo $controlador->inputs->descripcion; ?>
