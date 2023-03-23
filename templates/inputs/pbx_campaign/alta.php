@@ -12,6 +12,6 @@
 <?php echo $controlador->inputs->max_canales; ?>
 <?php echo $controlador->inputs->script; ?>
 <?php echo $controlador->inputs->estatus; ?>
-
+<?php echo $controlador->inputs->pbx_campaign_external_url_id; ?>
 <?php include (new views())->ruta_templates.'botons/submit/alta_bd.php';?>
 <div class="error"></div>

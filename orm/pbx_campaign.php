@@ -7,7 +7,7 @@ use PDO;
 class pbx_campaign extends _modelo_parent {
     public function __construct(PDO $link){
         $tabla = 'pbx_campaign';
-        $columnas = array($tabla=>false);
+        $columnas = array($tabla=>false, "pbx_campaign_external_url" => $tabla);
         $campos_obligatorios[] = 'codigo';
         $campos_obligatorios[] = 'descripcion';
         $campos_obligatorios[] = 'name';

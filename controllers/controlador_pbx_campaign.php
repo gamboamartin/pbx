@@ -53,6 +53,7 @@ class controlador_pbx_campaign extends _pbx_base {
         $keys->selects = array();
 
         $init_data = array();
+        $init_data['pbx_campaign_external_url'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
@@ -84,10 +85,12 @@ class controlador_pbx_campaign extends _pbx_base {
         $columns["pbx_campaign_max_canales"]["titulo"] = "Max canales";
         $columns["pbx_campaign_script"]["titulo"] = "Guion";
         $columns["pbx_campaign_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_campaign_external_url"]["titulo"] = "Url";
+
 
         $filtro = array("pbx_campaign.id", "pbx_campaign.codigo", "pbx_campaign.descripcion", "pbx_campaign.name", "pbx_campaign.datetime_end",
             "pbx_campaign.daytime_init", "pbx_campaign.daytime_end", "pbx_campaign.retries", "pbx_campaign.context", "pbx_campaign.queue", "pbx_campaign.max_canales",
-            "pbx_campaign.script", "pbx_campaign.estatus");
+            "pbx_campaign.script", "pbx_campaign.estatus", "pbx_campaign_external_url");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -107,7 +110,12 @@ class controlador_pbx_campaign extends _pbx_base {
 
         return $keys_selects;
     }
+    public function init_selects_inputs(): array
+    {
 
+        return $this->init_selects(keys_selects:  array(), key: "pbx_campaign_external_url_id", label: "Llamada",
+            cols: 12);
+    }
     protected function key_selects_txt(array $keys_selects): array
     {
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'codigo',
@@ -182,7 +190,13 @@ class controlador_pbx_campaign extends _pbx_base {
             return $this->retorno_error(
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
+        $keys_selects = $this->init_selects_inputs();
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
+                ws: $ws);
+        }
 
+        $keys_selects['pbx_campaign_external_url_id']->id_selected = $this->registro['pbx_campaign_external_url_id'];
         $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
         if (errores::$error) {
             return $this->retorno_error(mensaje: 'Error al integrar base', data: $base, header: $header, ws: $ws);
