@@ -10,10 +10,8 @@ class pbx_break extends _modelo_parent {
         $columnas = array($tabla=>false);
         $campos_obligatorios[] = 'codigo';
         $campos_obligatorios[] = 'descripcion';
-        $campos_obligatorios[] = 'type';
         $campos_obligatorios[] = 'name';
         $campos_obligatorios[] = 'description';
-        $campos_obligatorios[] = 'password';
         $campos_obligatorios[] = 'estatus';
         $campos_obligatorios[] = 'tipo';
 

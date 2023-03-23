@@ -11,11 +11,9 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
-use gamboamartin\pbx\models\pbx_agent;
 use gamboamartin\pbx\models\pbx_break;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
-use html\pbx_agent_html;
 use html\pbx_break_html;
 use PDO;
 use stdClass;
@@ -50,7 +48,7 @@ class controlador_pbx_break extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo', 'descripcion', 'name', 'description', 'estatus', 'tipo');
+        $keys->inputs = array('codigo', 'descripcion', 'name', 'estatus', 'tipo', 'description');
         $keys->selects = array();
 
         $init_data = array();
@@ -72,16 +70,18 @@ class controlador_pbx_break extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_form_id"]["titulo"] = "Id";
-        $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_descripcion"]["titulo"] = "Descripción";
-        $columns["pbx_form_name"]["titulo"] = "Nombre";
-        $columns["pbx_form_estatus"]["titulo"] = "Estatus";
-        $columns["pbx_form_tipo"]["titulo"] = "Tipo";
+        $columns["pbx_break_id"]["titulo"] = "Id";
+        $columns["pbx_break_codigo"]["titulo"] = "Código";
+        $columns["pbx_break_descripcion"]["titulo"] = "Descripción";
+        $columns["pbx_break_name"]["titulo"] = "Nombre";
+        $columns["pbx_break_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_break_tipo"]["titulo"] = "Tipo";
+        $columns["pbx_break_description"]["titulo"] = "Descripción";
 
 
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.descripcion", "pbx_form.name", "pbx_form.estatus",
-            "pbx_form.tipo");
+
+        $filtro = array("pbx_break.id", "pbx_break.codigo", "pbx_break.descripcion", "pbx_break.name", "pbx_break.estatus",
+            "pbx_break.tipo","pbx_break.description");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;

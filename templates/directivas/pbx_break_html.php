@@ -3,7 +3,6 @@
 namespace html;
 
 use gamboamartin\errores\errores;
-use gamboamartin\pbx\models\pbx_agent;
 use gamboamartin\pbx\models\pbx_break;
 use gamboamartin\system\html_controler;
 use PDO;
