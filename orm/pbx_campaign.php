@@ -20,6 +20,10 @@ class pbx_campaign extends _modelo_parent {
         $campos_obligatorios[] = 'max_canales';
         $campos_obligatorios[] = 'script';
         $campos_obligatorios[] = 'estatus';
+        $campos_obligatorios[] = 'trunk';
+        $campos_obligatorios[] = 'num_completadas';
+        $campos_obligatorios[] = 'promedio';
+        $campos_obligatorios[] = 'desviacion';
 
         parent::__construct(link: $link,tabla:  $tabla, campos_obligatorios: $campos_obligatorios,
             columnas: $columnas);

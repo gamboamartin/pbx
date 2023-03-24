@@ -49,7 +49,8 @@ class controlador_pbx_campaign extends _pbx_base {
     {
         $keys = new stdClass();
         $keys->inputs = array('codigo','descripcion', 'name', 'datetime_end', 'daytime_init', 'daytime_end',
-            'retries', 'context', 'queue', 'max_canales', 'script', 'estatus');
+            'retries', 'context', 'queue', 'max_canales', 'script', 'estatus', 'trunk', 'num_completadas',
+            'promedio', 'desviacion');
         $keys->selects = array();
 
         $init_data = array();
@@ -85,12 +86,16 @@ class controlador_pbx_campaign extends _pbx_base {
         $columns["pbx_campaign_max_canales"]["titulo"] = "Max canales";
         $columns["pbx_campaign_script"]["titulo"] = "Guion";
         $columns["pbx_campaign_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_campaign_trunk"]["titulo"] = "Truncada";
+        $columns["pbx_campaign_num_completadas"]["titulo"] = "Num completadas";
+        $columns["pbx_campaign_promedio"]["titulo"] = "Promedio";
+        $columns["pbx_campaign_desviacion"]["titulo"] = "Desviacion";
         $columns["pbx_campaign_external_url"]["titulo"] = "Url";
-
 
         $filtro = array("pbx_campaign.id", "pbx_campaign.codigo", "pbx_campaign.descripcion", "pbx_campaign.name", "pbx_campaign.datetime_end",
             "pbx_campaign.daytime_init", "pbx_campaign.daytime_end", "pbx_campaign.retries", "pbx_campaign.context", "pbx_campaign.queue", "pbx_campaign.max_canales",
-            "pbx_campaign.script", "pbx_campaign.estatus", "pbx_campaign_external_url");
+            "pbx_campaign.script", "pbx_campaign.estatus", "pbx_campaign.trunk", "pbx_campaign.num_completadas",
+            "pbx_campaign.promedio", "pbx_campaign.desviacion", "pbx_campaign_external_url");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -176,6 +181,26 @@ class controlador_pbx_campaign extends _pbx_base {
         }
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'estatus',
             keys_selects: $keys_selects, place_holder: 'Estatus');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'trunk',
+            keys_selects: $keys_selects, place_holder: 'Truncada');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'num_completadas',
+            keys_selects: $keys_selects, place_holder: 'Num_completadas');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'promedio',
+            keys_selects: $keys_selects, place_holder: 'Promedio');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'desviacion',
+            keys_selects: $keys_selects, place_holder: 'Desviacion');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
