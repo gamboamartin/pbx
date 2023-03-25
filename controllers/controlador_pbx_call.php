@@ -49,7 +49,11 @@ class controlador_pbx_call extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo','descripcion', 'phone', 'retries', 'dnc', 'scheduled');
+        $keys->inputs = array('codigo','descripcion', 'phone', 'retries', 'dnc', 'scheduled', 'estatus', 'uniqueid',
+            'fecha_llamada', 'start_time', 'end_time', 'duration', 'transfer', 'datetime_entry_queue', 'duration_wait',
+            'date_init', 'date_end', 'time_init', 'time_end', 'agent', 'failure_cause', 'failure_cause_txt', 'datetime_originate',
+            'trunk' );
+
         $keys->selects = array();
 
         $init_data = array();
@@ -78,6 +82,24 @@ class controlador_pbx_call extends _pbx_base {
         $columns["pbx_call_descripcion"]["titulo"] = "Descripcion";
         $columns["pbx_call_phone"]["titulo"] = "Telefono";
         $columns["pbx_call_retries"]["titulo"] = "Reintentos";
+        $columns["pbx_call_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_call_uniqueid"]["titulo"] = "ÚnicoId";
+        $columns["pbx_call_fecha_llamada"]["titulo"] = "Fecha de llamada";
+        $columns["pbx_call_start_time"]["titulo"] = "Inicio tiempo";
+        $columns["pbx_call_end_time"]["titulo"] = "Final tiempo";
+        $columns["pbx_call_duration"]["titulo"] = "Duration";
+        $columns["pbx_call_transfer"]["titulo"] = "transferir";
+        $columns["pbx_call_datetime_entry_queue"]["titulo"] = "Fecha y hora entrada a cola";
+        $columns["pbx_call_duration_wait"]["titulo"] = "Duración de espera";
+        $columns["pbx_call_date_init"]["titulo"] = "Fecha inicial";
+        $columns["pbx_call_date_end"]["titulo"] = "Fecha final";
+        $columns["pbx_call_time_init"]["titulo"] = "Tiempo inicial";
+        $columns["time_end"]["titulo"] = "tiempo final";
+        $columns["pbx_call_agent"]["titulo"] = "Agente";
+        $columns["pbx_call_failure_cause"]["titulo"] = "Causa de fallas";
+        $columns["pbx_call_failure_cause_txt"]["titulo"] = "Causa de fallas txt";
+        $columns["pbx_call_datetime_originate"]["titulo"] = "Origen de fecha y hora";
+        $columns["pbx_call_trunk"]["titulo"] = "Truncal";
         $columns["pbx_call_dnc"]["titulo"] = "DNC";
         $columns["pbx_call_scheduled"]["titulo"] = "Programada";
         $columns["pbx_agent_descripcion"]["titulo"] = "Formulario";
@@ -85,7 +107,10 @@ class controlador_pbx_call extends _pbx_base {
 
 
         $filtro = array("pbx_call.id", "pbx_call.codigo", "pbx_call.descripcion", "pbx_call.phone", "pbx_call.retries",
-            "pbx_call.dnc","pbx_call.scheduled", "pbx_agent_descripcion", "pbx_campaign_descripcion");
+            "pbx_call.dnc", "pbx_call.estatus", "pbx_call.uniqueid", "pbx_call.fecha_llamada", "pbx_call.start_time",
+            "pbx_call.end_time", "pbx_call.duration", "pbx_call.transfer", "pbx_call.datetime_entry_queue", "pbx_call.duration_wait",
+            "pbx_call.date_init", "pbx_call.date_end", "pbx_call.time_init", "pbx_call.time_end", "pbx_call.agent",
+            "pbx_call.failure_cause", "pbx_call.failure_cause_txt", "pbx_call.datetime_originate", "pbx_call.trunk",  "pbx_agent_descripcion", "pbx_campaign_descripcion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -145,6 +170,96 @@ class controlador_pbx_call extends _pbx_base {
 
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'scheduled',
             keys_selects: $keys_selects, place_holder: 'Programada');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'estatus',
+            keys_selects: $keys_selects, place_holder: 'Estatus');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'uniqueid',
+            keys_selects: $keys_selects, place_holder: 'ÚnicoId');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'fecha_llamada',
+            keys_selects: $keys_selects, place_holder: 'Fecha de llamada');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'start_time',
+            keys_selects: $keys_selects, place_holder: 'Inicio tiempo');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'end_time',
+            keys_selects: $keys_selects, place_holder: 'Final tiempo');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'duration',
+            keys_selects: $keys_selects, place_holder: 'Duration');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'transfer',
+            keys_selects: $keys_selects, place_holder: 'transferir');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'datetime_entry_queue',
+            keys_selects: $keys_selects, place_holder: '"Fecha y hora entrada a cola');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'duration_wait',
+            keys_selects: $keys_selects, place_holder: 'Duración de espera');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'date_init',
+            keys_selects: $keys_selects, place_holder: 'Fecha inicial');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'date_end',
+            keys_selects: $keys_selects, place_holder: 'Fecha final');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'time_init',
+            keys_selects: $keys_selects, place_holder: 'Tiempo inicial');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'time_end',
+            keys_selects: $keys_selects, place_holder: 'tiempo final');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'agent',
+            keys_selects: $keys_selects, place_holder: 'Agente');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'failure_cause',
+            keys_selects: $keys_selects, place_holder: 'Causa de fallas');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'failure_cause_txt',
+            keys_selects: $keys_selects, place_holder: 'Causa de fallas txt');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'datetime_originate',
+            keys_selects: $keys_selects, place_holder: 'Origen de fecha y hora');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'trunk',
+            keys_selects: $keys_selects, place_holder: 'Truncal');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
