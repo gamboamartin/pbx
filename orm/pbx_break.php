@@ -19,6 +19,6 @@ class pbx_break extends _modelo_parent {
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'break';
+        $this->etiqueta = 'Break';
     }
 }

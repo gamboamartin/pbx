@@ -38,6 +38,6 @@ class pbx_call extends _modelo_parent {
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'call';
+        $this->etiqueta = 'Call';
     }
 }

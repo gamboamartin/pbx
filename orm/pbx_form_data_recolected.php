@@ -15,6 +15,6 @@ class pbx_form_data_recolected extends _modelo_parent {
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'form';
+        $this->etiqueta = 'Form Data Recolected';
     }
 }

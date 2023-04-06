@@ -16,6 +16,6 @@ class pbx_campaign_form extends _modelo_parent {
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'campaign_form';
+        $this->etiqueta = 'Campaign Form';
     }
 }
