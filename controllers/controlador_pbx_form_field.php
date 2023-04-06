@@ -158,10 +158,11 @@ class controlador_pbx_form_field extends _pbx_base {
                 ws: $ws);
         }
 
+
         $keys_selects['pbx_form_id']->id_selected = $this->registro['pbx_form_id'];
+        $keys_selects['pbx_form_id']->cols = 6;
 
-
-        $base = $this->base_upd(keys_selects: array(), params: array(), params_ajustados: array());
+        $base = $this->base_upd(keys_selects: $keys_selects, params: array(), params_ajustados: array());
         if (errores::$error) {
             return $this->retorno_error(mensaje: 'Error al integrar base', data: $base, header: $header, ws: $ws);
         }
