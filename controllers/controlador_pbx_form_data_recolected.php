@@ -64,7 +64,7 @@ class controlador_pbx_form_data_recolected extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de form_data_recolected';
+        $this->titulo_lista = 'Formulario de Form Data Recolected';
 
         return $this;
     }

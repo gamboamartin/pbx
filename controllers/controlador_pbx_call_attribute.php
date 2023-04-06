@@ -67,7 +67,7 @@ class controlador_pbx_call_attribute extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de call attribute';
+        $this->titulo_lista = 'Formulario de Call Attribute';
 
         return $this;
     }

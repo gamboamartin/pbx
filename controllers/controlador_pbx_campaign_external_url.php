@@ -63,7 +63,7 @@ class controlador_pbx_campaign_external_url extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de external url';
+        $this->titulo_lista = 'Formulario de External Url';
 
         return $this;
     }

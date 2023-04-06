@@ -65,7 +65,7 @@ class controlador_pbx_campaign_form extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de Campaign_form';
+        $this->titulo_lista = 'Formulario de Campaign Form';
 
         return $this;
     }

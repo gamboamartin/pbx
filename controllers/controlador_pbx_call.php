@@ -70,7 +70,7 @@ class controlador_pbx_call extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de call';
+        $this->titulo_lista = 'Formulario de Call';
 
         return $this;
     }
