@@ -54,7 +54,8 @@
       "gamboa.martin/template": "^11.0.0",
       "gamboa.martin/template_1": "^14.0.0",
       "gamboa.martin/system": "^13.0.0",
-      "gamboa.martin/js_base": "^2.0.0"
+      "gamboa.martin/js_base": "^2.0.0",
+      "gamboa.martin/importador": "^2.0.0"
 
     },
     "require-dev": {
