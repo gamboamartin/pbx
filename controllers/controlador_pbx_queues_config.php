@@ -11,21 +11,19 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
-use gamboamartin\importador\models\imp_database;
-use gamboamartin\pbx\models\pbx_form;
-use gamboamartin\system\_ctl_base;
+use gamboamartin\pbx\models\pbx_queues_config;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
-use html\pbx_form_html;
+use html\pbx_queues_config_html;
 use PDO;
 use stdClass;
 
-class controlador_pbx_form extends _pbx_base {
+class controlador_pbx_queues_config extends _pbx_base {
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
-        $modelo = new pbx_form(link: $link);
-        $html_ = new pbx_form_html(html: $html);
+        $modelo = new pbx_queues_config(link: $link);
+        $html_ = new pbx_queues_config_html(html: $html);
         $obj_link = new links_menu(link: $link, registro_id: $this->registro_id);
 
         $datatables = $this->init_datatable();
@@ -50,7 +48,7 @@ class controlador_pbx_form extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo', 'descripcion', 'nombre', 'estatus');
+        $keys->inputs = array('codigo', 'descripcion', 'type', 'number', 'name', 'password', 'estatus','eccp_password');
         $keys->selects = array();
 
         $init_data = array();
@@ -65,22 +63,26 @@ class controlador_pbx_form extends _pbx_base {
 
     private function init_configuraciones(): controler
     {
-        $this->titulo_lista = 'Formulario de Form';
+        $this->titulo_lista = 'Formulario de Cola';
 
         return $this;
     }
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_form_id"]["titulo"] = "Id";
-        $columns["pbx_form_codigo"]["titulo"] = "Código";
-        $columns["pbx_form_descripcion"]["titulo"] = "Descripción";
-        $columns["pbx_form_nombre"]["titulo"] = "Nombre";
-        $columns["pbx_form_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_agent_id"]["titulo"] = "Id";
+        $columns["pbx_agent_codigo"]["titulo"] = "Código";
+        $columns["pbx_agent_descripcion"]["titulo"] = "Descripción";
+        $columns["pbx_agent_type"]["titulo"] = "Type";
+        $columns["pbx_agent_number"]["titulo"] = "Numero";
+        $columns["pbx_agent_name"]["titulo"] = "Nombre";
+        $columns["pbx_agent_password"]["titulo"] = "Password";
+        $columns["pbx_agent_estatus"]["titulo"] = "Estatus";
+        $columns["pbx_agent_eccp_password"]["titulo"] = "ECCP Password";
 
 
-        $filtro = array("pbx_form.id", "pbx_form.codigo", "pbx_form.descripcion", "pbx_form.nombre",
-            "pbx_form.estatus");
+        $filtro = array("pbx_agent.id", "pbx_agent.codigo", "pbx_agent.descripcion", "pbx_agent.type", "pbx_agent.number",
+            "pbx_agent.name", "pbx_agent.password", "pbx_agent.eccp_password", "pbx_agent.estatus");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -115,13 +117,29 @@ class controlador_pbx_form extends _pbx_base {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
 
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'nombre',
-            keys_selects: $keys_selects, place_holder: 'Nombre');
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'type',
+            keys_selects: $keys_selects, place_holder: 'Type');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
 
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 4, key: 'estatus',
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'number',
+            keys_selects: $keys_selects, place_holder: 'Number');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'password',
+            keys_selects: $keys_selects, place_holder: 'Password');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'eccp_password',
+            keys_selects: $keys_selects, place_holder: 'ECCP Password');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'estatus',
             keys_selects: $keys_selects, place_holder: 'Estatus');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
@@ -144,15 +162,6 @@ class controlador_pbx_form extends _pbx_base {
         }
 
         return $r_modifica;
-    }
-
-    public function sincroniza_form(bool $header, bool $ws = false){
-        $filtro['imp_database.descripcion'] = 'call_center';
-        $databases = (new imp_database($this->link))->filtro_and(filtro: $filtro);
-        if(errores::$error){
-            return $this->retorno_error(mensaje: 'Error al obtener destinos',data:  $databases,
-                header: $header, ws: $ws);
-        }
     }
 
 
