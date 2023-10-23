@@ -11,6 +11,7 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
+use gamboamartin\importador\models\imp_database;
 use gamboamartin\pbx\models\pbx_queues_config;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
@@ -163,6 +164,4 @@ class controlador_pbx_queues_config extends _pbx_base {
 
         return $r_modifica;
     }
-
-
 }
