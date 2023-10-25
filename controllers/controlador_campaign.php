@@ -48,9 +48,9 @@ class controlador_campaign extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo','descripcion', 'name', 'datetime_end', 'daytime_init', 'daytime_end',
-            'retries', 'context', 'queue', 'max_canales', 'script', 'estatus', 'trunk', 'num_completadas',
-            'promedio', 'desviacion');
+        $keys->inputs = array('codigo','descripcion', 'name', 'datetime_init','datetime_end', 'daytime_init',
+            'daytime_end', 'retries', 'context', 'queue', 'max_canales', 'script', 'estatus', 'trunk',
+            'num_completadas', 'promedio', 'desviacion');
         $keys->selects = array();
 
         $init_data = array();
@@ -78,6 +78,7 @@ class controlador_campaign extends _pbx_base {
         $columns["pbx_campaign_codigo"]["titulo"] = "Código";
         $columns["pbx_campaign_descripcion"]["titulo"] = "Descripcion";
         $columns["pbx_campaign_name"]["titulo"] = "Nombre";
+        $columns["pbx_campaign_datetime_init"]["titulo"] = "Inicio hora-fecha";
         $columns["pbx_campaign_datetime_end"]["titulo"] = "Fin hora-fecha";
         $columns["pbx_campaign_daytime_init"]["titulo"] = "Inicio diurno";
         $columns["pbx_campaign_daytime_end"]["titulo"] = "Fin del dia";
@@ -93,7 +94,7 @@ class controlador_campaign extends _pbx_base {
         $columns["pbx_campaign_desviacion"]["titulo"] = "Desviacion";
         $columns["pbx_campaign_external_url"]["titulo"] = "Url";
 
-        $filtro = array("pbx_campaign.id", "pbx_campaign.codigo", "pbx_campaign.descripcion", "pbx_campaign.name", "pbx_campaign.datetime_end",
+        $filtro = array("pbx_campaign.id", "pbx_campaign.codigo", "pbx_campaign.descripcion", "pbx_campaign.name", "pbx_campaign.datetime_init","pbx_campaign.datetime_end",
             "pbx_campaign.daytime_init", "pbx_campaign.daytime_end", "pbx_campaign.retries", "pbx_campaign.context", "pbx_campaign.queue", "pbx_campaign.max_canales",
             "pbx_campaign.script", "pbx_campaign.estatus", "pbx_campaign.trunk", "pbx_campaign.num_completadas",
             "pbx_campaign.promedio", "pbx_campaign.desviacion", "pbx_campaign_external_url");

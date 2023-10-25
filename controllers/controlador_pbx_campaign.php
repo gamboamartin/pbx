@@ -48,7 +48,7 @@ class controlador_pbx_campaign extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo','descripcion', 'name', 'datetime_end', 'daytime_init', 'daytime_end',
+        $keys->inputs = array('codigo','descripcion', 'name','datetime_init', 'datetime_end', 'daytime_init', 'daytime_end',
             'retries', 'context', 'queue', 'max_canales', 'script', 'estatus', 'trunk', 'num_completadas',
             'promedio', 'desviacion');
         $keys->selects = array();
@@ -78,6 +78,7 @@ class controlador_pbx_campaign extends _pbx_base {
         $columns["pbx_campaign_codigo"]["titulo"] = "Código";
         $columns["pbx_campaign_descripcion"]["titulo"] = "Descripcion";
         $columns["pbx_campaign_name"]["titulo"] = "Nombre";
+        $columns["pbx_campaign_datetime_init"]["titulo"] = "Inicio hora-fecha";
         $columns["pbx_campaign_datetime_end"]["titulo"] = "Fin hora-fecha";
         $columns["pbx_campaign_daytime_init"]["titulo"] = "Inicio diurno";
         $columns["pbx_campaign_daytime_end"]["titulo"] = "Fin del dia";
@@ -138,6 +139,11 @@ class controlador_pbx_campaign extends _pbx_base {
         }
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 12, key: 'name',
             keys_selects: $keys_selects, place_holder: 'Nombre');
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
+        }
+        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'datetime_init',
+            keys_selects: $keys_selects, place_holder: 'Inicio hora-fecha');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }

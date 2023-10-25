@@ -16,6 +16,7 @@ class pbx_campaign extends _modelo_parent {
         $tabla = 'pbx_campaign';
         $columnas = array($tabla=>false, "pbx_campaign_external_url" => $tabla);
         $campos_obligatorios[] = 'name';
+        $campos_obligatorios[] = 'datetime_init';
         $campos_obligatorios[] = 'datetime_end';
         $campos_obligatorios[] = 'daytime_init';
         $campos_obligatorios[] = 'daytime_end';
