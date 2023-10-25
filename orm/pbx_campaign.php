@@ -50,6 +50,12 @@ class pbx_campaign extends _modelo_parent {
             return $this->error->error(mensaje: 'Error al obtener destinos',data:  $imp_destinos);
         }
 
+        $pbx_form_id = 0;
+        if(isset($this->registro['pbx_form_id'])){
+            $pbx_form_id = $this->registro['pbx_form_id'];
+            unset($this->registro['pbx_form_id']);
+        }
+
         if(!isset($this->registro['context'])){
             $this->registro['context'] =  "from-internal";
         }
@@ -115,6 +121,16 @@ class pbx_campaign extends _modelo_parent {
         $modelo_pbx_call = new pbx_campaign_sinc($this->link);
         $modelo_pbx_call->registro = $registro_call;
         $pbx_calls = $modelo_pbx_call->alta_bd();
+        if (errores::$error) {
+            return $this->error->error(mensaje: 'Error al integrar call', data: $pbx_calls);
+        }
+
+        $registro_form['pbx_form_id'] = $pbx_form_id;
+        $registro_form['pbx_campaign_id'] = $r_alta_bd->registro_id;
+        $registro_form['campaign_id'] = $registro_cam_pbx;
+        $modelo_pbx_form = new pbx_campaign_form($this->link);
+        $modelo_pbx_form->registro = $registro_form;
+        $pbx_calls = $modelo_pbx_form->alta_bd();
         if (errores::$error) {
             return $this->error->error(mensaje: 'Error al integrar call', data: $pbx_calls);
         }

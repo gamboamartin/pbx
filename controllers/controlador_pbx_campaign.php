@@ -72,6 +72,7 @@ class controlador_pbx_campaign extends _pbx_base {
         $init_data = array();
         $init_data['pbx_queues_config'] = "gamboamartin\\pbx";
         $init_data['pbx_campaign_external_url'] = "gamboamartin\\pbx";
+        $init_data['pbx_form'] = "gamboamartin\\pbx";
 
         $campos_view = $this->campos_view_base(init_data: $init_data, keys: $keys);
         if (errores::$error) {
@@ -108,12 +109,11 @@ class controlador_pbx_campaign extends _pbx_base {
         $columns["pbx_campaign_num_completadas"]["titulo"] = "Num completadas";
         $columns["pbx_campaign_promedio"]["titulo"] = "Promedio";
         $columns["pbx_campaign_desviacion"]["titulo"] = "Desviacion";
-        $columns["pbx_campaign_external_url"]["titulo"] = "Url";
 
         $filtro = array("pbx_campaign.id", "pbx_campaign.codigo", "pbx_campaign.descripcion", "pbx_campaign.name", "pbx_campaign.datetime_end",
             "pbx_campaign.daytime_init", "pbx_campaign.daytime_end", "pbx_campaign.retries", "pbx_campaign.context", "pbx_campaign.queue", "pbx_campaign.max_canales",
             "pbx_campaign.script", "pbx_campaign.estatus", "pbx_campaign.trunk", "pbx_campaign.num_completadas",
-            "pbx_campaign.promedio", "pbx_campaign.desviacion", "pbx_campaign_external_url");
+            "pbx_campaign.promedio", "pbx_campaign.desviacion");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -135,10 +135,11 @@ class controlador_pbx_campaign extends _pbx_base {
     }
     public function init_selects_inputs(): array
     {
-
-        $this->init_selects(keys_selects:  array(), key: "pbx_queues_config_id", label: "Cola",
+        $keys_selects = $this->init_selects(keys_selects:  array(), key: "pbx_queues_config_id", label: "Cola",
             cols: 12);
-        return $this->init_selects(keys_selects:  array(), key: "pbx_campaign_external_url_id", label: "Llamada",
+        $keys_selects = $this->init_selects(keys_selects:  $keys_selects, key: "pbx_form_id", label: "Formulario",
+            cols: 12);
+        return $this->init_selects(keys_selects: $keys_selects, key: "pbx_campaign_external_url_id", label: "Llamada",
             cols: 12);
     }
     protected function key_selects_txt(array $keys_selects): array
@@ -299,7 +300,7 @@ class controlador_pbx_campaign extends _pbx_base {
 
         $numero_empresa = 1;
         $offset = 0;
-        $limit = 5;
+        $limit = 3;
         $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
 
         $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
@@ -369,7 +370,8 @@ class controlador_pbx_campaign extends _pbx_base {
             }
         }
 
-        return $results;
+        header('Location:' . $this->link_modifica);
+        exit;
     }
 
 }
