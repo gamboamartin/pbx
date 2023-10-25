@@ -11,19 +11,19 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use gamboamartin\errores\errores;
-use gamboamartin\pbx\models\pbx_campaign;
+use gamboamartin\pbx\models\campaign;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
-use html\pbx_campaign_html;
+use html\campaign_html;
 use PDO;
 use stdClass;
 
-class controlador_pbx_campaign extends _pbx_base {
+class controlador_campaign extends _pbx_base {
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
-        $modelo = new pbx_campaign(link: $link);
-        $html_ = new pbx_campaign_html(html: $html);
+        $modelo = new campaign(link: $link);
+        $html_ = new campaign_html(html: $html);
         $obj_link = new links_menu(link: $link, registro_id: $this->registro_id);
 
         $datatables = $this->init_datatable();
