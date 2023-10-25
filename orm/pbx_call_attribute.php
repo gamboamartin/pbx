@@ -24,7 +24,7 @@ class pbx_call_attribute extends _modelo_parent {
         $this->etiqueta = 'Call Attribute';
     }
 
-    public function alta_bd(array $keys_integra_ds = array('codigo', 'descripcion')): array|stdClass
+    public function alta_bd(array $keys_integra_ds = array('codigo', 'descripcion')): array|\stdClass
     {
         $filtro['imp_database.descripcion'] = 'call_center';
         $databases = (new imp_database($this->link))->filtro_and(filtro: $filtro);
@@ -53,7 +53,7 @@ class pbx_call_attribute extends _modelo_parent {
                 return $this->error->error(mensaje: 'Error al conectar con destino',data:  $link_destino);
             }
 
-            $modelo = new call($link_destino);
+            $modelo = new calls($link_destino);
 
             $modelo->usuario_id = $this->usuario_id;
             $modelo->integra_datos_base = false;

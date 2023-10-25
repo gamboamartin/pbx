@@ -9,15 +9,15 @@ use gamboamartin\importador\models\imp_destino;
 use stdClass;
 use PDO;
 
-class call extends _base {
+class campaign_form extends _base {
     public function __construct(PDO $link){
-        $tabla = 'call';
+        $tabla = 'campaign_form';
         $columnas = array($tabla=>false);
 
         parent::__construct(link: $link,tabla:  $tabla,
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'call';
+        $this->etiqueta = 'campaign_form';
     }
 }

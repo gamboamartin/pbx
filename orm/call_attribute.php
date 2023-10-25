@@ -10,7 +10,7 @@ class call_attribute extends _modelo_parent {
         $columnas = array($tabla => false, "pbx_call" => $tabla );
 
 
-        parent::__construct(link: $link,tabla:  $tabla, campos_obligatorios: $campos_obligatorios,
+        parent::__construct(link: $link,tabla:  $tabla,
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 

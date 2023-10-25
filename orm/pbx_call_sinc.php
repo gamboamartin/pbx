@@ -2,49 +2,28 @@
 namespace gamboamartin\pbx\models;
 
 use base\orm\_modelo_parent;
+use gamboamartin\administrador\models\adm_mes;
 use gamboamartin\errores\errores;
 use gamboamartin\importador\models\_conexion;
+use gamboamartin\importador\models\_modelado;
 use gamboamartin\importador\models\imp_database;
+use gamboamartin\importador\models\imp_destino;
+use stdClass;
 use PDO;
 
-class pbx_call extends _modelo_parent {
+class pbx_call_sinc extends _modelo_parent {
     public function __construct(PDO $link){
-        $tabla = 'pbx_call';
-        $columnas = array($tabla => false, "pbx_agent" => $tabla, "pbx_campaign" => $tabla);
-        $campos_obligatorios[] = 'codigo';
-        $campos_obligatorios[] = 'descripcion';
-        $campos_obligatorios[] = 'phone';
-        $campos_obligatorios[] = 'retries';
-        $campos_obligatorios[] = 'dnc';
-        $campos_obligatorios[] = 'scheduled';
-        $campos_obligatorios[] = 'estatus';
-        $campos_obligatorios[] = 'uniqueid';
-        $campos_obligatorios[] = 'fecha_llamada';
-        $campos_obligatorios[] = 'start_time';
-        $campos_obligatorios[] = 'end_time';
-        $campos_obligatorios[] = 'duration';
-        $campos_obligatorios[] = 'transfer';
-        $campos_obligatorios[] = 'datetime_entry_queue';
-        $campos_obligatorios[] = 'duration_wait';
-        $campos_obligatorios[] = 'date_init';
-        $campos_obligatorios[] = 'date_end';
-        $campos_obligatorios[] = 'time_init';
-        $campos_obligatorios[] = 'time_end';
-        $campos_obligatorios[] = 'agent';
-        $campos_obligatorios[] = 'failure_cause';
-        $campos_obligatorios[] = 'failure_cause_txt';
-        $campos_obligatorios[] = 'datetime_originate';
-        $campos_obligatorios[] = 'trunk';
+        $tabla = 'pbx_call_sinc';
+        $columnas = array($tabla=>false, "pbx_campaign" => $tabla);
 
-
-        parent::__construct(link: $link,tabla:  $tabla, campos_obligatorios: $campos_obligatorios,
+        parent::__construct(link: $link,tabla:  $tabla,
             columnas: $columnas);
         $this->NAMESPACE = __NAMESPACE__;
 
-        $this->etiqueta = 'Call';
+        $this->etiqueta = 'Campaign';
     }
 
-    public function alta_bd(array $keys_integra_ds = array('codigo', 'descripcion')): array|\stdClass
+    public function alta_bd(array $keys_integra_ds = array('codigo', 'descripcion')): array|stdClass
     {
         $filtro['imp_database.descripcion'] = 'call_center';
         $databases = (new imp_database($this->link))->filtro_and(filtro: $filtro);
@@ -61,9 +40,19 @@ class pbx_call extends _modelo_parent {
             return $this->error->error(mensaje: 'Error al obtener destinos',data:  $imp_destinos);
         }
 
-        /*if(!isset($this->registro['context'])){
+        if(!isset($this->registro['context'])){
             $this->registro['context'] =  "from-internal";
-        }*/
+        }
+
+        if(!isset($this->registro['estatus'])){
+            $this->registro['estatus'] =  "A";
+        }
+
+        $this->registro['script'] = $this->registro['script'].'<style type="text/css"> body { background: #FFF; } </style>';
+
+        if(!isset($this->registro['max_canales'])){
+            $this->registro['max_canales'] =  "0";
+        }
 
         foreach ($imp_destinos as $imp_destino) {
             $link_destino = (new _conexion())->link_destino(imp_database_id: $imp_destino['imp_database_id'],
@@ -72,7 +61,7 @@ class pbx_call extends _modelo_parent {
                 return $this->error->error(mensaje: 'Error al conectar con destino',data:  $link_destino);
             }
 
-            $modelo = new calls($link_destino);
+            $modelo = new campaign($link_destino);
 
             $modelo->usuario_id = $this->usuario_id;
             $modelo->integra_datos_base = false;
