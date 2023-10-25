@@ -12,7 +12,10 @@ namespace gamboamartin\pbx\controllers;
 use base\controller\controler;
 use gamboamartin\errores\errores;
 use gamboamartin\pbx\models\pbx_call;
+use gamboamartin\pbx\models\pbx_call_attribute;
+use gamboamartin\pbx\models\pbx_call_sinc;
 use gamboamartin\pbx\models\pbx_campaign;
+use gamboamartin\pbx\models\pbx_campaign_sinc;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
 use html\pbx_campaign_html;
@@ -296,7 +299,7 @@ class controlador_pbx_campaign extends _pbx_base {
 
         $numero_empresa = 1;
         $offset = 0;
-        $limit = 10;
+        $limit = 5;
         $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
 
         $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
@@ -315,23 +318,58 @@ class controlador_pbx_campaign extends _pbx_base {
         $result = file_get_contents($server, false, $context);
         $results = json_decode($result,true);
 
-        $registro_call = array();
-        foreach ($results as $res){
-            if(!isset($res['telefono'])){
-                $registro_call['telefono'] =  "3339524515";
-            }
-            $registro_call[''] = $res;
-            $registro_call[''] = $res;
-        }
 
-        $modelo_pbx_call = new pbx_call($this->link);
-        $modelo_pbx_call->registros = $registro_call;
-        $pbx_calls = $modelo_pbx_call->alta_bd();
+        $filtro_camp['pbx_campaign.id'] = $this->registro_id;
+        $pbx_campaign_sinc = (new pbx_campaign_sinc($this->link))->filtro_and(filtro: $filtro_camp);
         if (errores::$error) {
-            return $this->retorno_error(mensaje: 'Error al integrar call', data: $pbx_calls, header: $header, ws: $ws);
+            return $this->retorno_error(mensaje: 'Error al integrar campaña', data: $pbx_campaign_sinc,
+                header: $header, ws: $ws);
         }
 
+        $id_campaign = $pbx_campaign_sinc->registros[0]['pbx_campaign_sinc_campaign_id'];
 
+        foreach ($results as $res){
+            $registro_call = array();
+            if(!isset($res['phone'])){
+                $registro_call['phone'] =  "3339524515";
+            }
+            $registro_call['id_campaign'] = $id_campaign;
+            $registro_call['pbx_campaign_id'] = $this->registro_id;
+
+            $modelo_pbx_call = new pbx_call($this->link);
+            $modelo_pbx_call->registro = $registro_call;
+            $pbx_calls = $modelo_pbx_call->alta_bd();
+            if (errores::$error) {
+                return $this->retorno_error(mensaje: 'Error al integrar call', data: $pbx_calls, header: $header, ws: $ws);
+            }
+
+            $filtro_call['pbx_call.id'] = $pbx_calls->registro_id;
+            $pbx_call_sinc = (new pbx_call_sinc($this->link))->filtro_and(filtro: $filtro_call);
+            if (errores::$error) {
+                return $this->retorno_error(mensaje: 'Error al integrar campaña', data: $pbx_campaign_sinc,
+                    header: $header, ws: $ws);
+            }
+
+            $id_call = $pbx_call_sinc->registros[0]['pbx_call_sinc_call_id'];
+
+            $lugar = 1;
+            foreach ($res as $r => $valor){
+                $registro_attr['id_call'] = $id_call;
+                $registro_attr['columna'] = $r;
+                $registro_attr['value'] = $valor;
+                $registro_attr['column_number'] = $lugar;
+                $registro_attr['pbx_call_id'] = $pbx_calls->registro_id;
+                $modelo_pbx_call_attr = new pbx_call_attribute($this->link);
+                $modelo_pbx_call_attr->registro = $registro_attr;
+                $pbx_calls_attr = $modelo_pbx_call_attr->alta_bd();
+                if (errores::$error) {
+                    return $this->retorno_error(mensaje: 'Error al integrar call', data: $pbx_calls_attr, header: $header, ws: $ws);
+                }
+                $lugar++;
+            }
+        }
+
+        return $results;
     }
 
 }

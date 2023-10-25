@@ -25,58 +25,9 @@ class pbx_campaign_sinc extends _modelo_parent {
 
     public function alta_bd(array $keys_integra_ds = array('codigo', 'descripcion')): array|stdClass
     {
-        $filtro['imp_database.descripcion'] = 'call_center';
-        $databases = (new imp_database($this->link))->filtro_and(filtro: $filtro);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al obtener destinos',data:  $databases);
-        }
-
-        if($databases->n_registros <= 0){
-            return $this->error->error(mensaje: 'Error no existen destinos',data:  $databases);
-        }
-
-        $imp_destinos = (new imp_database($this->link))->destinos(imp_database_id: $databases->registros[0]['imp_database_id']);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al obtener destinos',data:  $imp_destinos);
-        }
-
-        if(!isset($this->registro['context'])){
-            $this->registro['context'] =  "from-internal";
-        }
-
-        if(!isset($this->registro['estatus'])){
-            $this->registro['estatus'] =  "A";
-        }
-
-        $this->registro['script'] = $this->registro['script'].'<style type="text/css"> body { background: #FFF; } </style>';
-
-        if(!isset($this->registro['max_canales'])){
-            $this->registro['max_canales'] =  "0";
-        }
-
-        foreach ($imp_destinos as $imp_destino) {
-            $link_destino = (new _conexion())->link_destino(imp_database_id: $imp_destino['imp_database_id'],
-                link: $this->link);
-            if(errores::$error){
-                return $this->error->error(mensaje: 'Error al conectar con destino',data:  $link_destino);
-            }
-
-            $modelo = new campaign($link_destino);
-
-            $modelo->usuario_id = $this->usuario_id;
-            $modelo->integra_datos_base = false;
-
-            $alta = $modelo->alta_registro($this->registro);
-            if(errores::$error){
-                $error = (new errores())->error('Error al insertar', $alta);
-                print_r($error);
-                exit;
-            }
-        }
-
         if(!isset($this->registro['descripcion'])){
-            $descripcion = $this->registro['name']." - ";
-            $descripcion .= $this->registro['datetime_init']. " a ".  $this->registro['datetime_end'];
+            $descripcion = $this->registro['campaign_id']." - ";
+            $descripcion .= $this->registro['pbx_campaign_id']." - ". rand(1000000,99999999);;
 
             $this->registro['descripcion'] = $descripcion;
         }
