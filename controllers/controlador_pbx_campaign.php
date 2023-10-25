@@ -20,6 +20,8 @@ use stdClass;
 
 class controlador_pbx_campaign extends _pbx_base {
 
+    public string $link_sincroniza_datos = '';
+
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
         $modelo = new pbx_campaign(link: $link);
@@ -43,6 +45,16 @@ class controlador_pbx_campaign extends _pbx_base {
             die('Error');
         }
         $this->lista_get_data = true;
+
+        $this->link_sincroniza_datos = $this->obj_link->link_con_id(accion: "sincroniza_datos",
+            link: $this->link, registro_id: $this->registro_id, seccion: $this->seccion);
+        if (errores::$error) {
+            $error = $this->errores->error(mensaje: 'Error al obtener link',
+                data: $this->link_sincroniza_datos);
+            print_r($error);
+            exit;
+        }
+
     }
 
     protected function campos_view(): array
@@ -240,5 +252,72 @@ class controlador_pbx_campaign extends _pbx_base {
         return $r_modifica;
     }
 
+    public function sincroniza_datos(bool $header, bool $ws =  false){
+        $server = 'http://144.126.152.44/api/api_contrato.php?metodo=consulta_contratos';
+
+        $filtro = array();
+        if(isset($_POST['contrato_id']) && $_POST['contrato_id'] !== '') {
+            $filtro['contrato_id']['tipo_dato'] = 'texto';
+            $filtro['contrato_id']['operador'] = 'igual';
+            $filtro['contrato_id']['valor'] = $_POST['contrato_id'];
+        }
+        if(isset($_POST['plaza_descripcion']) && $_POST['plaza_descripcion'] !== '') {
+            $filtro['plaza_descripcion']['tipo_dato'] = 'texto';
+            $filtro['plaza_descripcion']['operador'] = 'igual';
+            $filtro['plaza_descripcion']['valor'] = $_POST['plaza_descripcion'];
+        }
+        if(isset($_POST['contrato_contrato']) && $_POST['contrato_contrato'] !== '') {
+            $filtro['contrato_contrato']['tipo_dato'] = 'texto';
+            $filtro['contrato_contrato']['operador'] = 'igual';
+            $filtro['contrato_contrato']['valor'] = $_POST['contrato_contrato'];
+        }
+
+        /*if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
+            isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
+            $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
+            $filtro['contrato_fecha_validacion']['operador'] = 'between';
+            $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
+            $filtro['contrato_fecha_validacion']['valor2'] = $_POST['contrato_fecha_validacion_fin'];
+        }*/
+
+        if(isset($_POST['contrato_status']) && $_POST['contrato_status'] !== '') {
+            $filtro['contrato_status']['tipo_dato'] = 'texto';
+            $filtro['contrato_status']['operador'] = 'like';
+            $filtro['contrato_status']['valor'] = $_POST['contrato_status'];
+        }
+        if(isset($_POST['contrato_morosidad']) && $_POST['contrato_morosidad'] !== '') {
+            $filtro['contrato_morosidad']['tipo_dato'] = 'texto';
+            $filtro['contrato_morosidad']['operador'] = 'like';
+            $filtro['contrato_morosidad']['valor'] = $_POST['contrato_morosidad'];
+        }
+
+        $filto_encode = json_encode($filtro);
+
+        $numero_empresa = 1;
+        $offset = 0;
+        $limit = 10;
+        $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
+
+        $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
+            'filtros' => $filto_encode);
+        $fields_string = http_build_query($fields);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $fields_string
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents($server, false, $context);
+        $result = json_decode($result,true);
+
+
+        print_r($result);
+        exit;
+
+    }
 
 }
