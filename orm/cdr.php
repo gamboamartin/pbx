@@ -3,10 +3,7 @@
 namespace gamboamartin\pbx\models;
 
 use base\orm\_base;
-use base\orm\_modelo_parent;
-use gamboamartin\errores\errores;
 use PDO;
-use stdClass;
 
 class cdr extends _base
 {
@@ -24,19 +21,6 @@ class cdr extends _base
         $this->NAMESPACE = __NAMESPACE__;
 
         $this->etiqueta = 'cdr';
-    }
-
-    public function alta_bd(): array|stdClass
-    {
-        $horaActual = date("H:i:s");
-        $this->registro['calldate'] .= " " . $horaActual;
-
-        $r_alta_bd = parent::alta_bd();
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al insertar cdr', data: $r_alta_bd);
-        }
-
-        return $r_alta_bd;
     }
 
 }
