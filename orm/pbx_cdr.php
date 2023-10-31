@@ -46,6 +46,8 @@ class pbx_cdr extends _modelo_parent {
             }
 
             $modelo = new cdr($link_destino);
+            $modelo->usuario_id = $this->usuario_id;
+            $modelo->integra_datos_base = false;
 
             $alta = $modelo->alta_registro($this->registro);
             if(errores::$error){
@@ -53,6 +55,9 @@ class pbx_cdr extends _modelo_parent {
                 print_r($error);
                 exit;
             }
+
+            $registro_cdr = $alta->registro_id;
+
         }
 
 

@@ -11,16 +11,14 @@ class cdr extends _base
     {
         $tabla = 'cdr';
         $columnas = array($tabla => false);
-        $campos_obligatorios = array();
 
-        $no_duplicados = array();
 
-        parent::__construct(link: $link, tabla: $tabla, campos_obligatorios: $campos_obligatorios,
-            columnas: $columnas, no_duplicados: $no_duplicados);
+        parent::__construct(link: $link, tabla: $tabla, columnas: $columnas);
 
         $this->NAMESPACE = __NAMESPACE__;
 
         $this->etiqueta = 'cdr';
+
     }
 
 }
