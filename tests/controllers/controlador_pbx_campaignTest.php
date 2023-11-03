@@ -26,9 +26,7 @@ class controlador_pbx_campaignTest extends test {
         $this->paths_conf->views = '/var/www/html/pbx/config/views.php';
     }
 
-
-
-    /*public function test_alta(): void
+   /* public function test_sincroniza_datos(): void
     {
         errores::$error = false;
         $_GET['seccion'] = 'pbx_campaign';
@@ -38,10 +36,14 @@ class controlador_pbx_campaignTest extends test {
         $_GET['session_id'] = '1';
 
 
-        $ctl = new controlador_pbx_campaign(link: $this->link, paths_conf: $this->paths_conf);
+        //$pbx = new controlador_pbx_campaign(link: $this->link, paths_conf: $this->paths_conf);
         //$ctl = new liberator($ctl);
 
-        //$resultado = $ctl->campos_view();
+        $_POST['contrato_morosidad'] = 'MOROSO SEVERO';
+        $pbx->registro_id = 1;
+        //$resultado = $pbx->sincroniza_datos(header: false);
+
+        //print_r($resultado);Exit;
         /*$this->assertIsArray($resultado);
         $this->assertNotTrue(errores::$error);
         errores::$error = false;

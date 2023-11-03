@@ -300,7 +300,7 @@ class controlador_pbx_campaign extends _pbx_base {
 
         $numero_empresa = 1;
         $offset = 0;
-        $limit = 3;
+        $limit = 4;
         $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
 
         $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
@@ -319,7 +319,6 @@ class controlador_pbx_campaign extends _pbx_base {
         $result = file_get_contents($server, false, $context);
         $results = json_decode($result,true);
 
-
         $filtro_camp['pbx_campaign.id'] = $this->registro_id;
         $pbx_campaign_sinc = (new pbx_campaign_sinc($this->link))->filtro_and(filtro: $filtro_camp);
         if (errores::$error) {
@@ -329,11 +328,45 @@ class controlador_pbx_campaign extends _pbx_base {
 
         $id_campaign = $pbx_campaign_sinc->registros[0]['pbx_campaign_sinc_campaign_id'];
 
+        $registro_campaign = (new pbx_campaign($this->link))->registro(registro_id: $this->registro_id);
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al integrar campaña', data: $registro_campaign,
+                header: $header, ws: $ws);
+        }
+
+        $pbx_cola = (new pbx_campaign($this->link))->obten_colas_issabel(id_cola: $registro_campaign['pbx_campaign_queue']);
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al integrar call', data: $pbx_cola, header: $header, ws: $ws);
+        }
+
+        $extensiones = $pbx_cola['results'][0]['dynamic_members'];
+
+        $extensiones_lim =  array();
+        foreach ($extensiones as $extension){
+            $extensiones_tem = str_replace('S',"",$extension);
+            $extensiones_tem = str_replace(',0',"",$extensiones_tem);
+            $extensiones_lim[] = $extensiones_tem;
+        }
+
+        $cantidad_total = count($extensiones_lim)-1;
+        $cantidad_extensiones = $cantidad_total;
         foreach ($results as $res){
             $registro_call = array();
-            if(!isset($res['phone'])){
-                $registro_call['phone'] =  "3339524515";
+
+            if($cantidad_extensiones < 0){
+                $cantidad_extensiones = $cantidad_total;
             }
+
+            if(!isset($res['phone'])){
+                $tel_tem = trim($res['contrato_telefono']);
+                $tel_tem = str_replace('+',"",$tel_tem);
+                $num_tel = strlen($tel_tem);
+                if($num_tel < 10){
+                    continue;
+                }
+                $registro_call[]['phone'] = $extensiones_lim[$cantidad_extensiones].$tel_tem;
+            }
+
             $registro_call['id_campaign'] = $id_campaign;
             $registro_call['pbx_campaign_id'] = $this->registro_id;
 
@@ -368,6 +401,8 @@ class controlador_pbx_campaign extends _pbx_base {
                 }
                 $lugar++;
             }
+
+            $cantidad_extensiones--;
         }
 
         header('Location:' . $this->link_modifica);
