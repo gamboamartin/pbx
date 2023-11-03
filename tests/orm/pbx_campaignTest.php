@@ -28,7 +28,7 @@ class pbx_campaignTest extends test {
         $this->paths_conf->views = '/var/www/html/pbx/config/views.php';
     }
 
-    public function test_alta_bd(): void
+    public function test_genera_token_api_issabel(): void
     {
         errores::$error = false;
 
@@ -45,6 +45,28 @@ class pbx_campaignTest extends test {
       //  print_r($resultado);exit;
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
+
+        errores::$error = false;
+    }
+
+    public function test_obten_colas_issabel(): void
+    {
+        errores::$error = false;
+
+        $_GET['seccion'] = 'pbx_campaign';
+        $_GET['accion'] = 'lista';
+        $_SESSION['grupo_id'] = 1;
+        $_SESSION['usuario_id'] = 2;
+        $_GET['session_id'] = '1';
+
+        $pbx = new pbx_campaign(link: $this->link);
+        //$pbx = new liberator($inm);
+
+        $resultado = $pbx->obten_colas_issabel();
+
+        $this->assertIsArray($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("success",$resultado['status']);
 
         errores::$error = false;
     }
