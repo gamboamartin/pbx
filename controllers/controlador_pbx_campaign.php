@@ -10,7 +10,12 @@
 namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
+use base\orm\modelo;
 use gamboamartin\errores\errores;
+use gamboamartin\importador\models\_conexion;
+use gamboamartin\importador\models\imp_database;
+use gamboamartin\pbx\models\campaign;
+use gamboamartin\pbx\models\form;
 use gamboamartin\pbx\models\pbx_call;
 use gamboamartin\pbx\models\pbx_call_attribute;
 use gamboamartin\pbx\models\pbx_call_sinc;
@@ -26,7 +31,8 @@ class controlador_pbx_campaign extends _pbx_base {
 
     public string $link_sincroniza_datos = '';
 
-    public $select_queue;
+    public string $select_queue = '';
+    public string $select_form = '';
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
@@ -418,6 +424,11 @@ class controlador_pbx_campaign extends _pbx_base {
             return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
         }
 
+        $select = $this->select_form();
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
+        }
+
         $alta = parent::alta($header, $ws);
         if(errores::$error){
             return $this->retorno_error(mensaje: 'Error al generar alta', data: $alta, header: $header, ws: $ws);
@@ -446,5 +457,56 @@ class controlador_pbx_campaign extends _pbx_base {
         $this->select_queue = $select;
 
         return $this->select_queue;
+    }
+
+    public function select_form(){
+        $filtro['imp_database.descripcion'] = 'call_center';
+        $databases = (new imp_database($this->link))->filtro_and(filtro: $filtro);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al obtener destinos',data:  $databases);
+        }
+
+        if($databases->n_registros <= 0){
+            return $this->errores->error(mensaje: 'Error no existen destinos',data:  $databases);
+        }
+
+        $imp_destinos = (new imp_database($this->link))->destinos(imp_database_id: $databases->registros[0]['imp_database_id']);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al obtener destinos',data:  $imp_destinos);
+        }
+
+        $pbx_campaign = new pbx_campaign($this->link);
+        $values = array();
+        foreach ($imp_destinos as $imp_destino) {
+            $link_destino = (new _conexion())->link_destino(imp_database_id: $imp_destino['imp_database_id'],
+                link: $this->link);
+            if(errores::$error){
+                return $this->errores->error(mensaje: 'Error al conectar con destino',data:  $link_destino);
+            }
+
+            $modelo = new form($link_destino);
+
+            $modelo->usuario_id = $pbx_campaign->usuario_id;
+            $modelo->integra_datos_base = false;
+
+            $res = $modelo->registros();
+            if(errores::$error){
+                return $this->errores->error(mensaje: 'Error al conectar con destino',data:  $link_destino);
+            }
+
+            foreach ($res as $form){
+                $values[$form['form_id']] = array('descripcion_select' => $form['form_nombre']);
+            }
+        }
+
+        $select = $this->html_base->select(cols: '6', id_selected: -1, label: 'Form', name: 'pbx_form_id',
+            values: $values);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al generar select', data: $select);
+        }
+
+        $this->select_form = $select;
+
+        return $this->select_form;
     }
 }

@@ -29,6 +29,6 @@
 <?php //echo $controlador->inputs->queue; ?>
 <?php echo $controlador->select_queue; ?>
 <?php echo $controlador->inputs->script; ?>
-<?php echo $controlador->inputs->pbx_form_id; ?>
+<?php echo $controlador->select_form; ?>
 <?php include (new views())->ruta_templates.'botons/submit/alta_bd.php';?>
 <div class="error"></div>
