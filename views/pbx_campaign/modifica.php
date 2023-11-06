@@ -60,18 +60,8 @@
                                 <input type="date" name="contrato_fecha_validacion_fin" class="form-control"  id="contrato_fecha_validacion" placeholder="Fin Fecha Validacion" title="Fecha Validacion">
                             </div>
                         </div>-->
-                        <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_status">Estatus Contrato</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_status" class="form-control"  id="contrato_status" placeholder="Estatus Contrato" title="Estatus Contrato">
-                            </div>
-                        </div>
-                        <div class="control-group col-sm-12">
-                            <label class="control-label" for="contrato_morosidad">Morosidad Contrato</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_morosidad" class="form-control"  id="contrato_morosidad" placeholder="Morosidad Contrato" title="Morosidad Contrato">
-                            </div>
-                        </div>
+                        <?php echo $controlador->select_status; ?>
+                        <?php echo $controlador->select_morosidad; ?>
 
                         <div class="control-group btn-alta">
                             <div class="controls">

@@ -35,6 +35,8 @@ class controlador_pbx_campaign extends _pbx_base {
 
     public string $select_queue = '';
     public string $select_form = '';
+    public string $select_status = '';
+    public string $select_morosidad = '';
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
@@ -251,6 +253,17 @@ class controlador_pbx_campaign extends _pbx_base {
             return $this->retorno_error(
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
+
+        $select = $this->select_consulta_status();
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
+        }
+
+        $select = $this->select_consulta_morosidad();
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
+        }
+
         $keys_selects = $this->init_selects_inputs();
         if (errores::$error) {
             return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
@@ -267,7 +280,7 @@ class controlador_pbx_campaign extends _pbx_base {
         return $r_modifica;
     }
 
-    public function sincroniza_datos(bool $header, bool $ws =  fals){
+    public function sincroniza_datos(bool $header, bool $ws =  false){
         $generales = new generales();
 
         $filtro = array();
@@ -582,5 +595,79 @@ class controlador_pbx_campaign extends _pbx_base {
         $this->select_form = $select;
 
         return $this->select_form;
+    }
+
+    public function select_consulta_status(){
+        $generales = new generales();
+
+        $numero_empresa = 1;
+        $fields = array('numero_empresa' => $numero_empresa,'token' => $generales->token_em3);
+        $fields_string = http_build_query($fields);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $fields_string
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents($generales->url_consulta_status, false, $context);
+        $results = json_decode($result,true);
+
+        $values = array();
+        foreach ($results as $status){
+            if($status['contrato_status'] !== ''){
+                $values[$status['contrato_status']] = array('descripcion_select' => $status['contrato_status']);
+            }
+        }
+
+        $select = $this->html_base->select(cols: '6', id_selected: -1, label: 'Estatus Contrato', name:
+            'contrato_status', values: $values);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al generar select', data: $select);
+        }
+
+        $this->select_status = $select;
+
+        return $this->select_status;
+    }
+
+    public function select_consulta_morosidad(){
+        $generales = new generales();
+
+        $numero_empresa = 1;
+        $fields = array('numero_empresa' => $numero_empresa,'token' => $generales->token_em3);
+        $fields_string = http_build_query($fields);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $fields_string
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents($generales->url_consulta_morosidades, false, $context);
+        $results = json_decode($result,true);
+
+        $values = array();
+        foreach ($results as $status){
+            if($status['contrato_morosidad'] !== ''){
+                $values[$status['contrato_morosidad']] = array('descripcion_select' => $status['contrato_morosidad']);
+            }
+        }
+
+        $select = $this->html_base->select(cols: '6', id_selected: -1, label: 'Morosidad', name:
+            'contrato_morosidad', values: $values);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al generar select', data: $select);
+        }
+
+        $this->select_morosidad = $select;
+
+        return $this->select_morosidad;
     }
 }
