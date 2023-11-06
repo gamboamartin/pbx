@@ -267,7 +267,7 @@ class controlador_pbx_campaign extends _pbx_base {
         return $r_modifica;
     }
 
-    public function sin_tem(){
+    public function sincroniza_datos(bool $header, bool $ws =  fals){
         $generales = new generales();
 
         $filtro = array();
@@ -324,14 +324,22 @@ class controlador_pbx_campaign extends _pbx_base {
         $modelo_pbx_ultimo = new pbx_ultimo($this->link);
         $modelo_pbx_ultimo->registro = $registro_ultimo;
         $pbx_calls = $modelo_pbx_ultimo->alta_bd();
+        if (errores::$error) {
+            $this->retorno_error(mensaje: 'Error al integrar base', data: $pbx_calls, header: $header, ws: $ws);
+        }
+
 
         $registro_campaign['status_sincronizador'] = 'activo';
         $r_mod_pbx_campaign = (new pbx_campaign($this->link))->modifica_bd(registro: $registro_campaign,
             id: $this->registro_id);
+        if (errores::$error) {
+            $this->retorno_error(mensaje: 'Error al integrar base', data: $r_mod_pbx_campaign, header: $header, ws: $ws);
+        }
 
+        return $r_mod_pbx_campaign;
     }
 
-    public function sincroniza_datos(bool $header, bool $ws =  false){
+    /*public function sincroniza_datos(bool $header, bool $ws =  false){
         $server = 'http://144.126.152.44/api/api_contrato.php?metodo=consulta_contratos';
 
         $filtro = array();
@@ -351,13 +359,13 @@ class controlador_pbx_campaign extends _pbx_base {
             $filtro['contrato_contrato']['valor'] = $_POST['contrato_contrato'];
         }
 
-        /*if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
+        if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
             isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
             $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
             $filtro['contrato_fecha_validacion']['operador'] = 'between';
             $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
             $filtro['contrato_fecha_validacion']['valor2'] = $_POST['contrato_fecha_validacion_fin'];
-        }*/
+        }
 
         if(isset($_POST['contrato_status']) && $_POST['contrato_status'] !== '') {
             $filtro['contrato_status']['tipo_dato'] = 'texto';
@@ -481,7 +489,7 @@ class controlador_pbx_campaign extends _pbx_base {
 
         header('Location:' . $this->link_modifica);
         exit;
-    }
+    }*/
 
     public function alta(bool $header, bool $ws = false): array|string
     {
