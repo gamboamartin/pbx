@@ -43,21 +43,9 @@
                     </div>
                     <form method="post" action="<?php echo $controlador->link_sincroniza_datos; ?>" class="form-additional" id="frm-partida">
                         <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_id">Contrato ID</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_id" class="form-control"  id="contrato_id" placeholder="Contrato ID" title="Contrato ID">
-                            </div>
-                        </div>
-                        <div class="control-group col-sm-6">
                             <label class="control-label" for="plaza_descripcion">Plaza Descripcion</label>
                             <div class="controls">
                                 <input type="text" name="plaza_descripcion" class="form-control"  id="plaza_descripcion" placeholder="Plaza Descripcion" title="Plaza Descripcion">
-                            </div>
-                        </div>
-                        <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_contrato">Contrato</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_contrato" class="form-control"  id="contrato_contrato" placeholder="Contrato" title="Contrato">
                             </div>
                         </div>
                         <!--<div class="control-group col-sm-6">
