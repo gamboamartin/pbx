@@ -26,6 +26,8 @@ class controlador_pbx_campaign extends _pbx_base {
 
     public string $link_sincroniza_datos = '';
 
+    public $select_queue;
+
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
         $modelo = new pbx_campaign(link: $link);
@@ -409,4 +411,40 @@ class controlador_pbx_campaign extends _pbx_base {
         exit;
     }
 
+    public function alta(bool $header, bool $ws = false): array|string
+    {
+        $select = $this->select_cols();
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
+        }
+
+        $alta = parent::alta($header, $ws);
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error al generar alta', data: $alta, header: $header, ws: $ws);
+        }
+
+        return $alta;
+    }
+
+    public function select_cols(){
+        $pbx_cola = (new pbx_campaign($this->link))->obten_colas_issabel();
+        if (errores::$error) {
+            return $this->errores->error(mensaje: 'Error al integrar call', data: $pbx_cola);
+        }
+
+        $values = array();
+        foreach ($pbx_cola['results'] as $cola){
+            $values[$cola['extension']] = array('descripcion_select' => $cola['name']);
+        }
+
+        $select = $this->html_base->select(cols: '6', id_selected: -1, label: 'Cola', name: 'queue',
+            values: $values);
+        if(errores::$error){
+            return $this->errores->error(mensaje: 'Error al generar select', data: $select);
+        }
+
+        $this->select_queue = $select;
+
+        return $this->select_queue;
+    }
 }
