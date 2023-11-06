@@ -11,6 +11,7 @@ namespace gamboamartin\pbx\controllers;
 
 use base\controller\controler;
 use base\orm\modelo;
+use config\generales;
 use gamboamartin\errores\errores;
 use gamboamartin\importador\models\_conexion;
 use gamboamartin\importador\models\imp_database;
@@ -21,6 +22,7 @@ use gamboamartin\pbx\models\pbx_call_attribute;
 use gamboamartin\pbx\models\pbx_call_sinc;
 use gamboamartin\pbx\models\pbx_campaign;
 use gamboamartin\pbx\models\pbx_campaign_sinc;
+use gamboamartin\pbx\models\pbx_ultimo;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
 use html\pbx_campaign_html;
@@ -263,6 +265,70 @@ class controlador_pbx_campaign extends _pbx_base {
         }
 
         return $r_modifica;
+    }
+
+    public function sin_tem(){
+        $generales = new generales();
+
+        $filtro = array();
+        if(isset($_POST['contrato_id']) && $_POST['contrato_id'] !== '') {
+            $filtro['contrato_id']['tipo_dato'] = 'texto';
+            $filtro['contrato_id']['operador'] = 'igual';
+            $filtro['contrato_id']['valor'] = $_POST['contrato_id'];
+        }
+        if(isset($_POST['plaza_descripcion']) && $_POST['plaza_descripcion'] !== '') {
+            $filtro['plaza_descripcion']['tipo_dato'] = 'texto';
+            $filtro['plaza_descripcion']['operador'] = 'igual';
+            $filtro['plaza_descripcion']['valor'] = $_POST['plaza_descripcion'];
+        }
+        if(isset($_POST['contrato_contrato']) && $_POST['contrato_contrato'] !== '') {
+            $filtro['contrato_contrato']['tipo_dato'] = 'texto';
+            $filtro['contrato_contrato']['operador'] = 'igual';
+            $filtro['contrato_contrato']['valor'] = $_POST['contrato_contrato'];
+        }
+
+        /*if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
+            isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
+            $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
+            $filtro['contrato_fecha_validacion']['operador'] = 'between';
+            $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
+            $filtro['contrato_fecha_validacion']['valor2'] = $_POST['contrato_fecha_validacion_fin'];
+        }*/
+
+        if(isset($_POST['contrato_status']) && $_POST['contrato_status'] !== '') {
+            $filtro['contrato_status']['tipo_dato'] = 'texto';
+            $filtro['contrato_status']['operador'] = 'like';
+            $filtro['contrato_status']['valor'] = $_POST['contrato_status'];
+        }
+        if(isset($_POST['contrato_morosidad']) && $_POST['contrato_morosidad'] !== '') {
+            $filtro['contrato_morosidad']['tipo_dato'] = 'texto';
+            $filtro['contrato_morosidad']['operador'] = 'like';
+            $filtro['contrato_morosidad']['valor'] = $_POST['contrato_morosidad'];
+        }
+
+        $filto_encode = json_encode($filtro);
+
+        $numero_empresa = 1;
+        $offset = 0;
+        $limit = $generales->limit;
+        $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
+
+        $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
+            'filtros' => $filto_encode);
+        $fields_string = http_build_query($fields);
+
+        $registro_ultimo['offset']= 0;
+        $registro_ultimo['limit']= $generales->limit;
+        $registro_ultimo['sentencia']= $fields_string;
+        $registro_ultimo['pbx_campaign_id']= $this->registro_id;
+        $modelo_pbx_ultimo = new pbx_ultimo($this->link);
+        $modelo_pbx_ultimo->registro = $registro_ultimo;
+        $pbx_calls = $modelo_pbx_ultimo->alta_bd();
+
+        $registro_campaign['status_sincronizador'] = 'activo';
+        $r_mod_pbx_campaign = (new pbx_campaign($this->link))->modifica_bd(registro: $registro_campaign,
+            id: $this->registro_id);
+
     }
 
     public function sincroniza_datos(bool $header, bool $ws =  false){
