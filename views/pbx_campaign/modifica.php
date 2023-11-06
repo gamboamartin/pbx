@@ -48,7 +48,8 @@
                                 <input type="text" name="plaza_descripcion" class="form-control"  id="plaza_descripcion" placeholder="Plaza Descripcion" title="Plaza Descripcion">
                             </div>
                         </div>
-                        <!--<div class="control-group col-sm-6">
+                        <?php echo $controlador->select_status; ?>
+                        <div class="control-group col-sm-6">
                             <label class="control-label" for="contrato_fecha_validacion">Fecha Inicio Validacion</label>
                             <div class="controls">
                                 <input type="date" name="contrato_fecha_validacion_inicio" class="form-control"  id="contrato_fecha_validacion" placeholder="Inicio Fecha Validacion" title="Fecha Validacion">
@@ -59,8 +60,7 @@
                             <div class="controls">
                                 <input type="date" name="contrato_fecha_validacion_fin" class="form-control"  id="contrato_fecha_validacion" placeholder="Fin Fecha Validacion" title="Fecha Validacion">
                             </div>
-                        </div>-->
-                        <?php echo $controlador->select_status; ?>
+                        </div>
                         <?php echo $controlador->select_morosidad; ?>
 
                         <div class="control-group btn-alta">

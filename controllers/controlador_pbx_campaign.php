@@ -284,29 +284,18 @@ class controlador_pbx_campaign extends _pbx_base {
         $generales = new generales();
 
         $filtro = array();
-        if(isset($_POST['contrato_id']) && $_POST['contrato_id'] !== '') {
-            $filtro['contrato_id']['tipo_dato'] = 'texto';
-            $filtro['contrato_id']['operador'] = 'igual';
-            $filtro['contrato_id']['valor'] = $_POST['contrato_id'];
-        }
         if(isset($_POST['plaza_descripcion']) && $_POST['plaza_descripcion'] !== '') {
             $filtro['plaza_descripcion']['tipo_dato'] = 'texto';
             $filtro['plaza_descripcion']['operador'] = 'igual';
             $filtro['plaza_descripcion']['valor'] = $_POST['plaza_descripcion'];
         }
-        if(isset($_POST['contrato_contrato']) && $_POST['contrato_contrato'] !== '') {
-            $filtro['contrato_contrato']['tipo_dato'] = 'texto';
-            $filtro['contrato_contrato']['operador'] = 'igual';
-            $filtro['contrato_contrato']['valor'] = $_POST['contrato_contrato'];
-        }
-
-        /*if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
+        if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
             isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
             $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
             $filtro['contrato_fecha_validacion']['operador'] = 'between';
             $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
             $filtro['contrato_fecha_validacion']['valor2'] = $_POST['contrato_fecha_validacion_fin'];
-        }*/
+        }
 
         if(isset($_POST['contrato_status']) && $_POST['contrato_status'] !== '') {
             $filtro['contrato_status']['tipo_dato'] = 'texto';
@@ -660,7 +649,7 @@ class controlador_pbx_campaign extends _pbx_base {
             }
         }
 
-        $select = $this->html_base->select(cols: '6', id_selected: -1, label: 'Morosidad', name:
+        $select = $this->html_base->select(cols: '12', id_selected: -1, label: 'Morosidad', name:
             'contrato_morosidad', values: $values);
         if(errores::$error){
             return $this->errores->error(mensaje: 'Error al generar select', data: $select);
