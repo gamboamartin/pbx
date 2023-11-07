@@ -43,24 +43,19 @@
                     </div>
                     <form method="post" action="<?php echo $controlador->link_sincroniza_datos; ?>" class="form-additional" id="frm-partida">
                         <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_id">Contrato ID</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_id" class="form-control"  id="contrato_id" placeholder="Contrato ID" title="Contrato ID">
-                            </div>
-                        </div>
-                        <div class="control-group col-sm-6">
                             <label class="control-label" for="plaza_descripcion">Plaza Descripcion</label>
                             <div class="controls">
                                 <input type="text" name="plaza_descripcion" class="form-control"  id="plaza_descripcion" placeholder="Plaza Descripcion" title="Plaza Descripcion">
                             </div>
                         </div>
                         <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_contrato">Contrato</label>
+                            <label class="control-label" for="contrato_status">Contrato Status</label>
                             <div class="controls">
-                                <input type="text" name="contrato_contrato" class="form-control"  id="contrato_contrato" placeholder="Contrato" title="Contrato">
+                                <input type="text" name="contrato_status" class="form-control"  id="contrato_status" placeholder="Contrato Status" title="Contrato Status">
                             </div>
                         </div>
-                        <!--<div class="control-group col-sm-6">
+                        <?php //echo $controlador->select_status; ?>
+                        <div class="control-group col-sm-6">
                             <label class="control-label" for="contrato_fecha_validacion">Fecha Inicio Validacion</label>
                             <div class="controls">
                                 <input type="date" name="contrato_fecha_validacion_inicio" class="form-control"  id="contrato_fecha_validacion" placeholder="Inicio Fecha Validacion" title="Fecha Validacion">
@@ -71,19 +66,15 @@
                             <div class="controls">
                                 <input type="date" name="contrato_fecha_validacion_fin" class="form-control"  id="contrato_fecha_validacion" placeholder="Fin Fecha Validacion" title="Fecha Validacion">
                             </div>
-                        </div>-->
-                        <div class="control-group col-sm-6">
-                            <label class="control-label" for="contrato_status">Estatus Contrato</label>
-                            <div class="controls">
-                                <input type="text" name="contrato_status" class="form-control"  id="contrato_status" placeholder="Estatus Contrato" title="Estatus Contrato">
-                            </div>
                         </div>
                         <div class="control-group col-sm-12">
-                            <label class="control-label" for="contrato_morosidad">Morosidad Contrato</label>
+                            <label class="control-label" for="plaza_descripcion">Contrato Morosidad</label>
                             <div class="controls">
-                                <input type="text" name="contrato_morosidad" class="form-control"  id="contrato_morosidad" placeholder="Morosidad Contrato" title="Morosidad Contrato">
+                                <input type="text" name="contrato_morosidad" class="form-control"  id="contrato_morosidad" placeholder="Contrato Morosidad" title="Contrato Morosidad">
                             </div>
                         </div>
+
+                        <?php //echo $controlador->select_morosidad; ?>
 
                         <div class="control-group btn-alta">
                             <div class="controls">

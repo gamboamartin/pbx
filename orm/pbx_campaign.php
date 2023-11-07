@@ -2,6 +2,7 @@
 namespace gamboamartin\pbx\models;
 
 use base\orm\_modelo_parent;
+use config\generales;
 use gamboamartin\administrador\models\adm_mes;
 use gamboamartin\errores\errores;
 use gamboamartin\importador\models\_conexion;
@@ -136,5 +137,68 @@ class pbx_campaign extends _modelo_parent {
         }
 
         return $r_alta_bd;
+    }
+
+    public function genera_token_api_issabel(){
+
+        $generales =  new generales();
+
+        if(!isset($generales->url_api) || $generales->url_api === ''){
+            return $this->error->error(mensaje: 'Error no existe url api issabel', data:$generales);
+        }
+
+        $url_authenticate = $generales->url_api."authenticate";
+
+        if(!isset($generales->user_issabel) || $generales->user_issabel === ''){
+            return $this->error->error(mensaje: 'Error no existe url api issabel', data:$generales);
+        }
+
+        if(!isset($generales->pass_issabel) || $generales->pass_issabel === ''){
+            return $this->error->error(mensaje: 'Error no existe url api issabel', data:$generales);
+        }
+
+        $fields = array('user'=>$generales->user_issabel, 'password'=>$generales->pass_issabel);
+        $fields_string = http_build_query($fields);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $fields_string
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents($url_authenticate, false, $context);
+        $results = json_decode($result,true);
+
+        return $results['access_token'];
+    }
+
+    public function obten_colas_issabel(string $id_cola = ''){
+        $pbx_token = $this->genera_token_api_issabel();
+        if (errores::$error) {
+            return $this->error->error(mensaje: 'Error al integrar call', data: $pbx_token);
+        }
+
+        $generales =  new generales();
+
+        if(!isset($generales->url_api) || $generales->url_api === ''){
+            return $this->error->error(mensaje: 'Error no existe url api issabel', data:$generales);
+        }
+
+        $url_authenticate = $generales->url_api."queues/".$id_cola;
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'GET',
+                'header' => 'Authorization: Bearer '.$pbx_token,
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents($url_authenticate, false, $context);
+
+        return json_decode($result,true);
     }
 }
