@@ -361,8 +361,8 @@ class controlador_pbx_campaign extends _pbx_base {
             'filtros' => $filto_encode);
         $fields_string = http_build_query($fields);
 
-        $registro_ultimo['offset']= 0;
-        $registro_ultimo['limit']= $generales->limit;
+        $registro_ultimo['inicio']= 0;
+        $registro_ultimo['limite']= $generales->limit;
         $registro_ultimo['sentencia']= $fields_string;
         $registro_ultimo['pbx_campaign_id']= $this->registro_id;
         $modelo_pbx_ultimo = new pbx_ultimo($this->link);
@@ -380,7 +380,8 @@ class controlador_pbx_campaign extends _pbx_base {
             $this->retorno_error(mensaje: 'Error al integrar base', data: $r_mod_pbx_campaign, header: $header, ws: $ws);
         }
 
-        return $r_mod_pbx_campaign;
+        header('Location:' . $this->link_modifica);
+        exit;
     }
 
     /*public function sincroniza_datos(bool $header, bool $ws =  false){
