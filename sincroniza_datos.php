@@ -193,8 +193,8 @@ foreach ($campaigns->registros as $campaign){
         $cantidad_extensiones--;
     }
 
-    $registro_ultimo['offset'] = $offset + $limit;
-    $r_mod_pbx_ultimo = $pbx_ultimo_modelo->modifica_bd(registro: $registro_ultimo,
+    $registro_ultimo_mod['offset'] = $offset + $limit;
+    $r_mod_pbx_ultimo = $pbx_ultimo_modelo->modifica_bd(registro: $registro_ultimo_mod,
         id: $registro_ultimo->registros[0]['pbx_ultimo_id']);
     if(errores::$error){
         $error = (new errores())->error(mensaje: 'Error',data:  $r_mod_pbx_ultimo);
