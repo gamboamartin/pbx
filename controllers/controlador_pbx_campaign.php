@@ -291,8 +291,48 @@ class controlador_pbx_campaign extends _pbx_base {
             $filtro['plaza_descripcion']['operador'] = 'igual';
             $filtro['plaza_descripcion']['valor'] = $_POST['plaza_descripcion'];
         }
+
+        if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
+            isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] === '') {
+            $fecha_inicio = strtotime($_POST['contrato_fecha_validacion_inicio']);
+            $fecha_fin = strtotime(date('Y-m-d'));
+
+            if($fecha_inicio > $fecha_fin) {
+                $_POST['contrato_fecha_validacion_inicio'] = date('Y-m-d');
+            }
+
+            $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
+            $filtro['contrato_fecha_validacion']['operador'] = 'between';
+            $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
+            $filtro['contrato_fecha_validacion']['valor2'] = date('Y-m-d');
+        }
+
+        if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] === '' &&
+            isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
+            $fecha_inicio = strtotime(date('Y-m-d'));
+            $fecha_fin = strtotime($_POST['contrato_fecha_validacion_fin']);
+
+            if($fecha_inicio > $fecha_fin) {
+                $_POST['contrato_fecha_validacion_fin'] = date('Y-m-d');
+            }
+            $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
+            $filtro['contrato_fecha_validacion']['operador'] = 'between';
+            $filtro['contrato_fecha_validacion']['valor'] = date('Y-m-d');
+            $filtro['contrato_fecha_validacion']['valor2'] = $_POST['contrato_fecha_validacion_fin'];
+        }
+
         if(isset($_POST['contrato_fecha_validacion_inicio']) && $_POST['contrato_fecha_validacion_inicio'] !== '' &&
             isset($_POST['contrato_fecha_validacion_fin']) && $_POST['contrato_fecha_validacion_fin'] !== '') {
+            $fecha_inicio = strtotime($_POST['contrato_fecha_validacion_inicio']);
+            $fecha_fin = strtotime($_POST['contrato_fecha_validacion_fin']);
+
+            if($fecha_inicio > $fecha_fin) {
+                $tem_ini = $_POST['contrato_fecha_validacion_inicio'];
+                $tem_fin =  $_POST['contrato_fecha_validacion_fin'];
+                $_POST['contrato_fecha_validacion_inicio'] = $tem_fin;
+                $_POST['contrato_fecha_validacion_fin'] = $tem_ini;
+            }
+
             $filtro['contrato_fecha_validacion']['tipo_dato'] = 'fecha';
             $filtro['contrato_fecha_validacion']['operador'] = 'between';
             $filtro['contrato_fecha_validacion']['valor'] = $_POST['contrato_fecha_validacion_inicio'];
