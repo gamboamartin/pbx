@@ -353,12 +353,9 @@ class controlador_pbx_campaign extends _pbx_base {
         $filto_encode = json_encode($filtro);
 
         $numero_empresa = 1;
-        $offset = 0;
-        $limit = $generales->limit;
         $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
 
-        $fields = array('numero_empresa' => $numero_empresa, 'offset' => $offset,'limit' => $limit,'token' => $token,
-            'filtros' => $filto_encode);
+        $fields = array('numero_empresa' => $numero_empresa,'token' => $token, 'filtros' => $filto_encode);
         $fields_string = http_build_query($fields);
 
         $registro_ultimo['inicio']= 0;
