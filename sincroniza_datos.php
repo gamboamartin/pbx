@@ -26,10 +26,10 @@ require 'vendor/autoload.php';
 $file_lock = '';
 $con = new conexion();
 $link = conexion::$link;
-$pbx_campaign_modelo = (new pbx_campaign(link: $link));
 $_SESSION['usuario_id'] = 2;
 $_SESSION['session_id'] = mt_rand(10000000,99999999);
 $_GET['session_id'] = $_SESSION['session_id'];
+$pbx_campaign_modelo = (new pbx_campaign(link: $link));
 
 $filtro['pbx_campaign.status_sincronizador'] = 'activo';
 $campaigns = $pbx_campaign_modelo->filtro_and(filtro: $filtro);
@@ -83,55 +83,9 @@ foreach ($campaigns->registros as $campaign){
     $context  = stream_context_create($opts);
 
     //$result = file_get_contents((new generales())->url_consulta_contratos, false, $context);
-    $result = '{
-	"0":
-	{
-		"contrato_id": 569897,
-		"plaza_descripcion": "Monterrey",
-		"contrato_contrato": "MTYC9088",
-		"contrato_serie": "MTYC",
-		"contrato_folio": "9088",
-		"contrato_fecha_validacion": "2022-01-03",
-		"contrato_monto_precio": 22900,
-		"contrato_monto_pagado": 200,
-		"contrato_monto_resto": 22700,
-		"contrato_status": "OBSERVACION",
-		"contrato_morosidad": "MOROSO SEVERO",
-		"contrato_telefono":"3339524515"
-	},
-	"1":
-	{
-		"contrato_id": 569897,
-		"plaza_descripcion": "Monterrey",
-		"contrato_contrato": "MTYC9088",
-		"contrato_serie": "MTYC",
-		"contrato_folio": "9088",
-		"contrato_fecha_validacion": "2022-01-03",
-		"contrato_monto_precio": 22900,
-		"contrato_monto_pagado": 200,
-		"contrato_monto_resto": 22700,
-		"contrato_status": "OBSERVACION",
-		"contrato_morosidad": "MOROSO SEVERO",
-		"contrato_telefono":"3339524515"
-	},
-	"2":
-	{
-		"contrato_id": 569897,
-		"plaza_descripcion": "Monterrey",
-		"contrato_contrato": "MTYC9088",
-		"contrato_serie": "MTYC",
-		"contrato_folio": "9088",
-		"contrato_fecha_validacion": "2022-01-03",
-		"contrato_monto_precio": 22900,
-		"contrato_monto_pagado": 200,
-		"contrato_monto_resto": 22700,
-		"contrato_status": "OBSERVACION",
-		"contrato_morosidad": "MOROSO SEVERO",
-		"contrato_telefono":"3339524515"
-	}
-}';
+    //$result = '{"0":{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"1":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"2":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	}}';
+    $result = '{}';
     $results = json_decode($result,true);
-
     if(count($results) <= 0){
         $registro_campaign['status_sincronizador'] = 'inactivo';
         $r_mod_pbx_campaign = $pbx_campaign_modelo->modifica_bd(registro: $registro_campaign,
