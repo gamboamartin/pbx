@@ -48,7 +48,13 @@
                                 <input type="text" name="plaza_descripcion" class="form-control"  id="plaza_descripcion" placeholder="Plaza Descripcion" title="Plaza Descripcion">
                             </div>
                         </div>
-                        <?php echo $controlador->select_status; ?>
+                        <div class="control-group col-sm-6">
+                            <label class="control-label" for="contrato_status">Contrato Status</label>
+                            <div class="controls">
+                                <input type="text" name="contrato_status" class="form-control"  id="contrato_status" placeholder="Contrato Status" title="Contrato Status">
+                            </div>
+                        </div>
+                        <?php //echo $controlador->select_status; ?>
                         <div class="control-group col-sm-6">
                             <label class="control-label" for="contrato_fecha_validacion">Fecha Inicio Validacion</label>
                             <div class="controls">
@@ -61,7 +67,14 @@
                                 <input type="date" name="contrato_fecha_validacion_fin" class="form-control"  id="contrato_fecha_validacion" placeholder="Fin Fecha Validacion" title="Fecha Validacion">
                             </div>
                         </div>
-                        <?php echo $controlador->select_morosidad; ?>
+                        <div class="control-group col-sm-12">
+                            <label class="control-label" for="plaza_descripcion">Contrato Morosidad</label>
+                            <div class="controls">
+                                <input type="text" name="contrato_morosidad" class="form-control"  id="contrato_morosidad" placeholder="Contrato Morosidad" title="Contrato Morosidad">
+                            </div>
+                        </div>
+
+                        <?php //echo $controlador->select_morosidad; ?>
 
                         <div class="control-group btn-alta">
                             <div class="controls">

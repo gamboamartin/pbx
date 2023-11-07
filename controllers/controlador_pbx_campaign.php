@@ -26,8 +26,10 @@ use gamboamartin\pbx\models\pbx_ultimo;
 use gamboamartin\system\links_menu;
 use gamboamartin\template\html;
 use html\pbx_campaign_html;
+use Mosquitto\Exception;
 use PDO;
 use stdClass;
+use Throwable;
 
 class controlador_pbx_campaign extends _pbx_base {
 
@@ -254,7 +256,7 @@ class controlador_pbx_campaign extends _pbx_base {
                 mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
         }
 
-        $select = $this->select_consulta_status();
+       /* $select = $this->select_consulta_status();
         if(errores::$error){
             return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
         }
@@ -262,7 +264,7 @@ class controlador_pbx_campaign extends _pbx_base {
         $select = $this->select_consulta_morosidad();
         if(errores::$error){
             return $this->retorno_error(mensaje: 'Error al generar select', data: $select, header: $header, ws: $ws);
-        }
+        }*/
 
         $keys_selects = $this->init_selects_inputs();
         if (errores::$error) {
@@ -602,13 +604,18 @@ class controlador_pbx_campaign extends _pbx_base {
         );
         $context  = stream_context_create($opts);
 
-        $result = file_get_contents($generales->url_consulta_status, false, $context);
+        $result = @file_get_contents($generales->url_consulta_status, false, $context);
         $results = json_decode($result,true);
+        if ($result === false) {
+            $results = array();
+        }
 
         $values = array();
-        foreach ($results as $status){
-            if($status['contrato_status'] !== ''){
-                $values[$status['contrato_status']] = array('descripcion_select' => $status['contrato_status']);
+        if(count($results)>0) {
+            foreach ($results as $status) {
+                if ($status['contrato_status'] !== '') {
+                    $values[$status['contrato_status']] = array('descripcion_select' => $status['contrato_status']);
+                }
             }
         }
 
@@ -639,13 +646,17 @@ class controlador_pbx_campaign extends _pbx_base {
         );
         $context  = stream_context_create($opts);
 
-        $result = file_get_contents($generales->url_consulta_morosidades, false, $context);
+        $result = @file_get_contents($generales->url_consulta_morosidades, false, $context);
         $results = json_decode($result,true);
-
+        if ($result === false) {
+            $results = array();
+        }
         $values = array();
-        foreach ($results as $status){
-            if($status['contrato_morosidad'] !== ''){
-                $values[$status['contrato_morosidad']] = array('descripcion_select' => $status['contrato_morosidad']);
+        if(count($results)>0) {
+            foreach ($results as $status) {
+                if ($status['contrato_morosidad'] !== '') {
+                    $values[$status['contrato_morosidad']] = array('descripcion_select' => $status['contrato_morosidad']);
+                }
             }
         }
 
