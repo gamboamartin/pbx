@@ -51,7 +51,7 @@ class controlador_pbx_call extends _pbx_base {
         $keys = new stdClass();
         $keys->inputs = array('codigo','descripcion', 'phone', 'retries', 'dnc', 'scheduled', 'estatus', 'uniqueid',
             'fecha_llamada', 'start_time', 'end_time', 'duration', 'transfer', 'datetime_entry_queue', 'duration_wait',
-            'date_init', 'date_end', 'time_init', 'time_end', 'agent', 'failure_cause', 'failure_cause_txt', 'datetime_originate',
+            'date_init', 'date_end', 'time_init', 'agent', 'failure_cause', 'failure_cause_txt', 'datetime_originate',
             'trunk' );
 
         $keys->selects = array();
@@ -94,7 +94,6 @@ class controlador_pbx_call extends _pbx_base {
         $columns["pbx_call_date_init"]["titulo"] = "Fecha inicial";
         $columns["pbx_call_date_end"]["titulo"] = "Fecha final";
         $columns["pbx_call_time_init"]["titulo"] = "Tiempo inicial";
-        $columns["time_end"]["titulo"] = "tiempo final";
         $columns["pbx_call_agent"]["titulo"] = "Agente";
         $columns["pbx_call_failure_cause"]["titulo"] = "Causa de fallas";
         $columns["pbx_call_failure_cause_txt"]["titulo"] = "Causa de fallas txt";
@@ -109,7 +108,7 @@ class controlador_pbx_call extends _pbx_base {
         $filtro = array("pbx_call.id", "pbx_call.codigo", "pbx_call.descripcion", "pbx_call.phone", "pbx_call.retries",
             "pbx_call.dnc", "pbx_call.estatus", "pbx_call.uniqueid", "pbx_call.fecha_llamada", "pbx_call.start_time",
             "pbx_call.end_time", "pbx_call.duration", "pbx_call.transfer", "pbx_call.datetime_entry_queue", "pbx_call.duration_wait",
-            "pbx_call.date_init", "pbx_call.date_end", "pbx_call.time_init", "pbx_call.time_end", "pbx_call.agent",
+            "pbx_call.date_init", "pbx_call.date_end", "pbx_call.time_init", "pbx_call.agent",
             "pbx_call.failure_cause", "pbx_call.failure_cause_txt", "pbx_call.datetime_originate", "pbx_call.trunk",  "pbx_agent_descripcion", "pbx_campaign_descripcion");
 
         $datatables = new stdClass();
