@@ -49,7 +49,7 @@ class controlador_pbx_queues_config extends _pbx_base {
     protected function campos_view(): array
     {
         $keys = new stdClass();
-        $keys->inputs = array('codigo', 'descripcion', 'type', 'number', 'name', 'password', 'estatus','eccp_password');
+        $keys->inputs = array('codigo', 'descripcion', 'descr');
         $keys->selects = array();
 
         $init_data = array();
@@ -71,19 +71,13 @@ class controlador_pbx_queues_config extends _pbx_base {
 
     private function init_datatable(): stdClass
     {
-        $columns["pbx_agent_id"]["titulo"] = "Id";
-        $columns["pbx_agent_codigo"]["titulo"] = "Código";
-        $columns["pbx_agent_descripcion"]["titulo"] = "Descripción";
-        $columns["pbx_agent_type"]["titulo"] = "Type";
-        $columns["pbx_agent_number"]["titulo"] = "Numero";
-        $columns["pbx_agent_name"]["titulo"] = "Nombre";
-        $columns["pbx_agent_password"]["titulo"] = "Password";
-        $columns["pbx_agent_estatus"]["titulo"] = "Estatus";
-        $columns["pbx_agent_eccp_password"]["titulo"] = "ECCP Password";
+        $columns["pbx_queues_config_id"]["titulo"] = "Id";
+        $columns["pbx_queues_config_codigo"]["titulo"] = "Código";
+        $columns["pbx_queues_config_descripcion"]["titulo"] = "Descripción";
+        $columns["pbx_queues_config_descr"]["titulo"] = "Descr";
 
-
-        $filtro = array("pbx_agent.id", "pbx_agent.codigo", "pbx_agent.descripcion", "pbx_agent.type", "pbx_agent.number",
-            "pbx_agent.name", "pbx_agent.password", "pbx_agent.eccp_password", "pbx_agent.estatus");
+        $filtro = array("pbx_queues_config.id", "pbx_queues_config.codigo", "pbx_queues_config.descripcion",
+            "pbx_queues_config.descr");
 
         $datatables = new stdClass();
         $datatables->columns = $columns;
@@ -114,34 +108,6 @@ class controlador_pbx_queues_config extends _pbx_base {
 
         $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'descripcion',
             keys_selects: $keys_selects, place_holder: 'Descripción');
-        if (errores::$error) {
-            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
-        }
-
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'type',
-            keys_selects: $keys_selects, place_holder: 'Type');
-        if (errores::$error) {
-            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
-        }
-
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'number',
-            keys_selects: $keys_selects, place_holder: 'Number');
-        if (errores::$error) {
-            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
-        }
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'password',
-            keys_selects: $keys_selects, place_holder: 'Password');
-        if (errores::$error) {
-            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
-        }
-
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'eccp_password',
-            keys_selects: $keys_selects, place_holder: 'ECCP Password');
-        if (errores::$error) {
-            return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
-        }
-        $keys_selects = (new \base\controller\init())->key_select_txt(cols: 6, key: 'estatus',
-            keys_selects: $keys_selects, place_holder: 'Estatus');
         if (errores::$error) {
             return $this->errores->error(mensaje: 'Error al maquetar key_selects', data: $keys_selects);
         }
