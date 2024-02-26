@@ -65,7 +65,7 @@ foreach ($campaigns->registros as $campaign){
     }
 
     $filtro = $registro_ultimo->registros[0]['pbx_ultimo_sentencia'];
-    $offset = $registro_ultimo->registros[0]['pbx_ultimo_offset'];
+    $offset = $registro_ultimo->registros[0]['pbx_ultimo_salto'];
     $limit = $registro_ultimo->registros[0]['pbx_ultimo_limite'];
 
     $fields = array('offset' => $offset,'limit' => $limit);
@@ -193,7 +193,7 @@ foreach ($campaigns->registros as $campaign){
         $cantidad_extensiones--;
     }
 
-    $registro_ultimo_mod['offset'] = $offset + $limit;
+    $registro_ultimo_mod['salto'] = $offset + $limit;
     $r_mod_pbx_ultimo = $pbx_ultimo_modelo->modifica_bd(registro: $registro_ultimo_mod,
         id: $registro_ultimo->registros[0]['pbx_ultimo_id']);
     if(errores::$error){
