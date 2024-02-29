@@ -626,6 +626,11 @@ class controlador_pbx_campaign extends _pbx_base {
         return $this->select_form;
     }
 
+    public function registros_sinc()
+    {
+
+    }
+
     public function select_consulta_status(){
         $generales = new generales();
 
