@@ -203,20 +203,27 @@ class pbx_campaign extends _modelo_parent {
     }
 
     public function obten_registros_call(int $registro_id){
-        /*$filtro_camp['pbx_campaign.id'] = $registro_id;
-        $pbx_campaign_sinc = (new pbx_campaign_sinc($this->link))->filtro_and(filtro: $filtro_camp);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error',data:  $pbx_campaign_sinc);
-        }
-
-        $id_campaign = $pbx_campaign_sinc->registros[0]['pbx_campaign_sinc_campaign_id'];
-*/
         $filtro_call['pbx_call.pbx_campaign_id'] = $registro_id;
         $pbx_call = (new pbx_call($this->link))->filtro_and(filtro: $filtro_call);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error',data:  $pbx_call);
         }
 
-        return $pbx_call;
+        $registros_call_comp = array();
+        foreach ($pbx_call->registros as $registro){
+            $filtro_call['pbx_call_attribute.pbx_call_id'] = $registro['pbx_call_id'];
+            $pbx_call_attribute = (new pbx_call_attribute($this->link))->filtro_and(filtro: $filtro_call);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error',data:  $pbx_call_attribute);
+            }
+
+            $temp = array();
+            foreach ($pbx_call_attribute->registros as $pbx_att){
+                $temp[$pbx_att['pbx_call_attribute_columna']] = $pbx_att['pbx_call_attribute_value'];
+            }
+            $registros_call_comp[] = $temp;
+        }
+
+        return $registros_call_comp;
     }
 }

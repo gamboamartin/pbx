@@ -647,6 +647,11 @@ class controlador_pbx_campaign extends _pbx_base {
             return $this->retorno_error(mensaje: 'Error al integrar base', data: $base, header: $header, ws: $ws);
         }
 
+        $registros_call = (new pbx_campaign($this->link))->obten_registros_call($this->registro_id);
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $registros_call, header: $header,
+                ws: $ws);
+        }
 
 
         return $r_modifica;
