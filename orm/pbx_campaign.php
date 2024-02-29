@@ -201,4 +201,22 @@ class pbx_campaign extends _modelo_parent {
 
         return json_decode($result,true);
     }
+
+    public function obten_registros_call(int $registro_id){
+        /*$filtro_camp['pbx_campaign.id'] = $registro_id;
+        $pbx_campaign_sinc = (new pbx_campaign_sinc($this->link))->filtro_and(filtro: $filtro_camp);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error',data:  $pbx_campaign_sinc);
+        }
+
+        $id_campaign = $pbx_campaign_sinc->registros[0]['pbx_campaign_sinc_campaign_id'];
+*/
+        $filtro_call['pbx_call.pbx_campaign_id'] = $registro_id;
+        $pbx_call = (new pbx_call($this->link))->filtro_and(filtro: $filtro_call);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error',data:  $pbx_call);
+        }
+
+        return $pbx_call;
+    }
 }

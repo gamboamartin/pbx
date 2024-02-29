@@ -626,9 +626,30 @@ class controlador_pbx_campaign extends _pbx_base {
         return $this->select_form;
     }
 
-    public function registros_sinc()
+    public function registros_sinc(bool $header, bool $ws = false)
     {
+        $r_modifica = $this->init_modifica();
+        if (errores::$error) {
+            return $this->retorno_error(
+                mensaje: 'Error al generar salida de template', data: $r_modifica, header: $header, ws: $ws);
+        }
 
+        $keys_selects = $this->init_selects_inputs();
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al inicializar selects', data: $keys_selects, header: $header,
+                ws: $ws);
+        }
+
+        $keys_selects['pbx_campaign_external_url_id']->id_selected = $this->registro['pbx_campaign_external_url_id'];
+
+        $base = $this->base_upd(keys_selects: $keys_selects, params: array(), params_ajustados: array());
+        if (errores::$error) {
+            return $this->retorno_error(mensaje: 'Error al integrar base', data: $base, header: $header, ws: $ws);
+        }
+
+
+
+        return $r_modifica;
     }
 
     public function select_consulta_status(){
