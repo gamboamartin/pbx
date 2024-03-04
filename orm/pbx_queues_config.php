@@ -12,12 +12,6 @@ class pbx_queues_config extends _modelo_parent {
         $columnas = array($tabla=>false);
         $campos_obligatorios[] = 'codigo';
         $campos_obligatorios[] = 'descripcion';
-        $campos_obligatorios[] = 'type';
-        $campos_obligatorios[] = 'number';
-        $campos_obligatorios[] = 'name';
-        $campos_obligatorios[] = 'password';
-        $campos_obligatorios[] = 'estatus';
-        $campos_obligatorios[] = 'eccp_password';
 
         parent::__construct(link: $link,tabla:  $tabla, campos_obligatorios: $campos_obligatorios,
             columnas: $columnas);
