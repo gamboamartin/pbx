@@ -41,6 +41,7 @@ class controlador_pbx_campaign extends _pbx_base {
     public string $select_morosidad = '';
 
     public array $registros_call = array();
+    public array $registros_ultimo = array();
 
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
@@ -280,6 +281,14 @@ class controlador_pbx_campaign extends _pbx_base {
         if (errores::$error) {
             return $this->retorno_error(mensaje: 'Error al integrar base', data: $base, header: $header, ws: $ws);
         }
+
+        $filtro_call['pbx_ultimo.pbx_campaign_id'] = $this->registro_id;
+        $pbx_ultimo = (new pbx_ultimo($this->link))->filtro_and(filtro: $filtro_call);
+        if(errores::$error){
+            return $this->retorno_error(mensaje: 'Error',data:  $pbx_ultimo,header: $header, ws: $ws);
+        }
+
+        $this->registros_ultimo = $pbx_ultimo->registros;
 
         return $r_modifica;
     }

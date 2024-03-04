@@ -89,6 +89,43 @@
 
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="widget widget-box box-container widget-mylistings">
+                    <div class="widget-header"
+                         style="display: flex;justify-content: space-between;align-items: center;">
+                        <h2>Ultimo</h2>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="table-gt_autorizantes" class="table mb-0 table-striped table-sm ">
+                            <thead>
+                            <tr>
+                                <th data-breakpoints="xs sm md" data-type="html" >Id</th>
+                                <th data-breakpoints="xs sm md" data-type="html" >Offset</th>
+                                <th data-breakpoints="xs sm md" data-type="html" >Limite</th>
+                                <th data-breakpoints="xs sm md" data-type="html" >Sentencia</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($controlador->registros_ultimo as $registro){?>
+                                <tr>
+                                    <td><?php echo $registro['pbx_ultimo_id']; ?></td>
+                                    <td><?php echo $registro['pbx_ultimo_salto']; ?></td>
+                                    <td><?php echo $registro['pbx_ultimo_limite']; ?></td>
+                                    <td><?php echo $registro['pbx_ultimo_sentencia']; ?></td>
+                                </tr>
+                            <?php } ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 </main>
 
 
