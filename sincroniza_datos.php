@@ -71,7 +71,7 @@ foreach ($campaigns->registros as $campaign){
     $fields = array('offset' => $offset,'limit' => $limit);
     $fields_string = http_build_query($fields);
 
-    $content = $filtro.$fields_string;
+    $content = $filtro;
 
     $opts = array('http' =>
         array(
@@ -82,12 +82,17 @@ foreach ($campaigns->registros as $campaign){
     );
     $context  = stream_context_create($opts);
     $result = file_get_contents((new generales())->url_consulta_contratos, false, $context);
-    //print_r($result);exit;
 
     //$result = '{"0":{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	}}';
     //$result = '{"0":{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"1":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"2":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	}}';
     //$result = '{}';
     $results = json_decode($result,true);
+
+    if(isset($results['error'])){
+        echo 'Error '. $results['mensaje'];
+        continue;
+    }
+
     if(count($results) <= 0){
         $registro_campaign['status_sincronizador'] = 'inactivo';
         $r_mod_pbx_campaign = $pbx_campaign_modelo->modifica_bd(registro: $registro_campaign,
@@ -203,7 +208,6 @@ foreach ($campaigns->registros as $campaign){
         unlink($file_lock);
         exit;
     }
-
 }
 
 //unlink($file_lock);
