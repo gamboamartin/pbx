@@ -366,11 +366,12 @@ class controlador_pbx_campaign extends _pbx_base {
         $numero_empresa = 1;
         $token = 'PF0+orvaeWUp1ld5MoLJ62qu/vxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW+lQ==';
 
-        $fields = 'numero_empresa='.$numero_empresa.'&token='.$token.'&filtros='.$filto_encode;
+        $fields = array('numero_empresa' => $numero_empresa,'token' => $token);
+        $fields_string = http_build_query($fields);
 
         $registro_ultimo['inicio']= 0;
         $registro_ultimo['limite']= $generales->limit;
-        $registro_ultimo['sentencia']= $fields;
+        $registro_ultimo['sentencia']= $fields_string.'&filtros='.$filto_encode;
         $registro_ultimo['pbx_campaign_id']= $this->registro_id;
         $modelo_pbx_ultimo = new pbx_ultimo($this->link);
         $modelo_pbx_ultimo->registro = $registro_ultimo;

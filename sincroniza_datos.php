@@ -68,9 +68,12 @@ foreach ($campaigns->registros as $campaign){
     $offset = $registro_ultimo->registros[0]['pbx_ultimo_salto'];
     $limit = $registro_ultimo->registros[0]['pbx_ultimo_limite'];
 
-    $fields_string = '&offset='.$offset.'&limit='.$limit;
+    $fields = '&offset='.$offset.'&limit='.$limit;
+    //$fields_string = http_build_query($fields);
 
-    $content = $filtro.$fields_string;
+    //$content = 'numero_empresa=1&token=PF0%2BorvaeWUp1ld5MoLJ62qu%2FvxjAl04Zog3JGxvahKEIL70A9uozeD0BZsr2oxZYSexclCRPYOtaWGrzkW%2BlQ%3D%3D&filtros={"contrato_fecha_validacion":{"tipo_dato":"fecha","operador":"mayor_igual","valor":"2023-01-16","valor2":"2023-01-17"}}'.$fields;
+
+    $content = $filtro.$fields;
 
     $opts = array('http' =>
         array(
@@ -81,7 +84,7 @@ foreach ($campaigns->registros as $campaign){
     );
     $context  = stream_context_create($opts);
     $result = file_get_contents((new generales())->url_consulta_contratos, false, $context);
-print_r($result);exit;
+print_r($result);Exit;
     //$result = '{"0":{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	}}';
     //$result = '{"0":{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"1":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	},	"2":	{		"contrato_id": 569897,		"plaza_descripcion": "Monterrey",		"contrato_contrato": "MTYC9088",		"contrato_serie": "MTYC",		"contrato_folio": "9088",		"contrato_fecha_validacion": "2022-01-03",		"contrato_monto_precio": 22900,		"contrato_monto_pagado": 200,		"contrato_monto_resto": 22700,		"contrato_status": "OBSERVACION",		"contrato_morosidad": "MOROSO SEVERO",		"contrato_telefono":"3339524515"	}}';
     //$result = '{}';
@@ -207,6 +210,7 @@ print_r($result);exit;
         unlink($file_lock);
         exit;
     }
+
 }
 
 //unlink($file_lock);
