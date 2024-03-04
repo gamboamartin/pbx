@@ -209,6 +209,7 @@ class pbx_campaign extends _modelo_parent {
             return $this->error->error(mensaje: 'Error',data:  $pbx_call);
         }
 
+        $columnas = array();
         $registros_call_comp = array();
         foreach ($pbx_call->registros as $registro){
             $filtro_call['pbx_call_attribute.pbx_call_id'] = $registro['pbx_call_id'];
@@ -220,10 +221,15 @@ class pbx_campaign extends _modelo_parent {
             $temp = array();
             foreach ($pbx_call_attribute->registros as $pbx_att){
                 $temp[$pbx_att['pbx_call_attribute_columna']] = $pbx_att['pbx_call_attribute_value'];
+                $columnas[$pbx_att['pbx_call_attribute_columna']] = $pbx_att['pbx_call_attribute_columna'];
             }
             $registros_call_comp[] = $temp;
         }
 
-        return $registros_call_comp;
+        $result = array();
+        $result['columnas'] = $columnas;
+        $result['registros'] = $registros_call_comp;
+
+        return $result;
     }
 }

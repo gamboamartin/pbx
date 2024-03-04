@@ -40,6 +40,8 @@ class controlador_pbx_campaign extends _pbx_base {
     public string $select_status = '';
     public string $select_morosidad = '';
 
+    public array $registros_call = array();
+
     public function __construct(PDO $link, html $html = new \gamboamartin\template_1\html(),
                                 stdClass $paths_conf = new stdClass()){
         $modelo = new pbx_campaign(link: $link);
@@ -653,6 +655,7 @@ class controlador_pbx_campaign extends _pbx_base {
                 ws: $ws);
         }
 
+        $this->registros_call = $registros_call;
 
         return $r_modifica;
     }
